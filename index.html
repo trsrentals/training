@@ -593,18 +593,65 @@ body.dark .email-pre{background:#151820;}
 
 <!-- MANAGER -->
 <div id="view-manager" class="view">
-  <div class="page-header"><h1>Manager Dashboard</h1><p>See who's on track and who needs attention — without sending a single check-in message.</p></div>
-  <div class="mgr-stats">
-    <div class="stat-card"><div class="stat-n">3</div><div class="stat-l">Reps in week 1</div></div>
-    <div class="stat-card"><div class="stat-n">74%</div><div class="stat-l">Avg. completion</div></div>
-    <div class="stat-card"><div class="stat-n">1</div><div class="stat-l">Needs attention</div></div>
+  <div class="page-header"><h1>Manager Dashboard</h1><p>Import trainee session files to track progress, flag who needs attention, and keep your roster in sync — no check-in calls needed.</p></div>
+
+  <!-- LIVE STATS BAR -->
+  <div class="mgr-stats" id="mgrStatsBar">
+    <div class="stat-card"><div class="stat-n" id="mgrStatCount">0</div><div class="stat-l">Trainees loaded</div></div>
+    <div class="stat-card"><div class="stat-n" id="mgrStatAvg">—</div><div class="stat-l">Avg. completion</div></div>
+    <div class="stat-card"><div class="stat-n" id="mgrStatAttn">0</div><div class="stat-l">Needs attention</div></div>
   </div>
-  <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:20px 22px;margin-bottom:14px;">
-    <div style="font-size:11px;font-weight:600;color:var(--navy);letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px;">Active trainees</div>
-    <div class="rep-row"><div><div class="rep-name">Alex M.</div><div class="rep-day">Day 4 of 5 · Started Mon</div></div><div class="rep-right"><div class="mini-bar"><div class="mini-fill" style="width:88%"></div></div><div class="rep-pct">88%</div><span class="sbadge good">On track</span></div></div>
-    <div class="rep-row"><div><div class="rep-name">Jordan L.</div><div class="rep-day">Day 2 of 5 · Started Wed</div></div><div class="rep-right"><div class="mini-bar"><div class="mini-fill" style="width:35%"></div></div><div class="rep-pct">35%</div><span class="sbadge risk">Check in</span></div></div>
-    <div class="rep-row"><div><div class="rep-name">Sam T.</div><div class="rep-day">Day 1 of 5 · Started today</div></div><div class="rep-right"><div class="mini-bar"><div class="mini-fill" style="width:10%"></div></div><div class="rep-pct">10%</div><span class="sbadge new">New</span></div></div>
+
+  <!-- IMPORT TOOLBAR -->
+  <div style="background:var(--navy);border-radius:14px;padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div>
+      <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Trainee roster</div>
+      <div style="font-size:13px;color:rgba(248,246,241,.6);line-height:1.5;">Import JSON files exported by each trainee. You can load multiple — each file updates or adds that person to your roster.</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="mgrImportTrainee()" style="padding:9px 18px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">⬆ Import trainee file</button>
+      <button onclick="mgrExportRoster()" style="padding:9px 18px;border-radius:10px;background:transparent;color:var(--gold);font-size:13px;font-weight:600;border:1.5px solid var(--gold);cursor:pointer;font-family:'DM Sans',sans-serif;">⬇ Export manager session</button>
+      <button onclick="mgrClearRoster()" style="padding:9px 18px;border-radius:10px;background:transparent;color:rgba(248,246,241,.45);font-size:13px;font-weight:600;border:1.5px solid rgba(255,255,255,.18);cursor:pointer;font-family:'DM Sans',sans-serif;">✕ Clear roster</button>
+    </div>
   </div>
+
+  <!-- TRAINEE ROSTER TABLE -->
+  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);margin-bottom:16px;overflow:hidden;">
+    <div style="display:grid;grid-template-columns:160px 80px 1fr 110px 100px 36px;gap:10px;padding:10px 18px;background:var(--navy);font-size:10px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;">
+      <div>Name</div><div>Progress</div><div>Day breakdown</div><div>Confidence</div><div>Status</div><div></div>
+    </div>
+    <div id="mgrRosterRows">
+      <div id="mgrEmptyState" style="padding:40px 20px;text-align:center;color:var(--muted);">
+        <div style="font-size:32px;margin-bottom:12px;">📂</div>
+        <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">No trainees loaded yet</div>
+        <div style="font-size:13px;line-height:1.6;">Ask each trainee to export their session (⚙️ → Export session), then import those files here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRAINEE DETAIL PANEL -->
+  <div id="mgrDetailPanel" style="display:none;background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-bottom:16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+      <div>
+        <div style="font-size:18px;font-weight:600;color:var(--navy);" id="mgrDetailName">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;" id="mgrDetailMeta">—</div>
+      </div>
+      <button onclick="closeMgrDetail()" style="padding:6px 14px;border-radius:8px;background:var(--cream);color:var(--navy);font-size:12px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;">✕ Close</button>
+    </div>
+    <!-- Day-by-day breakdown -->
+    <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Day-by-day completion</div>
+    <div id="mgrDetailDays" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:18px;"></div>
+    <!-- Confidence gaps -->
+    <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">Confidence gaps — needs coaching</div>
+    <div id="mgrDetailConfidence" style="margin-bottom:18px;"></div>
+    <!-- Notes -->
+    <div id="mgrDetailNotesWrap" style="display:none;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Trainee notes</div>
+      <div id="mgrDetailNotes" style="background:var(--cream);border-radius:10px;padding:14px 16px;font-size:13px;color:#444;line-height:1.8;"></div>
+    </div>
+  </div>
+
+  <!-- RULES REFERENCE -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
     <div style="background:var(--white);border-radius:14px;border:1px solid var(--border);padding:18px 20px;">
       <div style="font-size:11px;font-weight:600;color:var(--red);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px;">Red flags — act immediately</div>
@@ -835,12 +882,12 @@ body.dark .email-pre{background:#151820;}
 
 <script>
 const videoRegistry = [
-  { id:'v-odoo-basics', label:'Odoo Basics | Getting Started',     day:'Day 1 · 9:00 AM',  url:'https://www.odoo.com/slides/getting-started-1' },
-  { id:'v-attendances', label:'Attendances Basics | Odoo HR',       day:'Day 1 · 10:00 AM', url:'https://www.odoo.com/slides/attendances' },
-  { id:'v-discuss',     label:'Discuss Basics | Getting Started',   day:'Day 1 · 11:00 AM', url:'https://www.odoo.com/slides/discuss' },
-  { id:'v-crm-basics',  label:'CRM Basics: All About Activities',   day:'Day 1 · 1:00 PM',  url:'https://www.odoo.com/slides/slide/leads-and-opportunities-1986' },
-  { id:'v-filters',     label:'Filters and Views Tutorial',         day:'Day 2 AM · 8:30 AM',  url:'https://www.odoo.com/slides/slide/filters-and-group-by-1308' },
-  { id:'v-rental-flow', label:'Odoo 19 Rental Flow Explained',      day:'Day 2 AM · 8:30 AM',  url:'' },
+  { id:'v-odoo-basics', label:'Odoo Basics | Getting Started',     day:'Day 1 · 9:00 AM',  url:'https://www.youtube.com/watch?v=8OmZ6Pgme5s' },
+  { id:'v-attendances', label:'Attendances Basics | Odoo HR',       day:'Day 1 · 10:00 AM', url:'https://www.youtube.com/watch?v=zdaELnDd13I' },
+  { id:'v-discuss',     label:'Discuss Basics | Getting Started',   day:'Day 1 · 11:00 AM', url:'https://www.youtube.com/watch?v=j9_0duO--yM' },
+  { id:'v-crm-basics',  label:'CRM Basics: All About Activities',   day:'Day 1 · 1:00 PM',  url:'https://www.odoo.com/slides/slide/crm-basics-all-about-activities-2722' },
+  { id:'v-filters',     label:'Filters and Views Tutorial',         day:'Day 2 AM · 8:30 AM',  url:'https://www.youtube.com/watch?v=QuC6rc2q2mg' },
+  { id:'v-rental-flow', label:'Odoo 19 Rental Flow Explained',      day:'Day 2 AM · 8:30 AM',  url:'https://www.youtube.com/watch?v=5_NqgrpFaDs' },
 ];
 
 function applyVideoUrls() {
@@ -2102,26 +2149,215 @@ function exportPdf() {
 }
 
 // ══════ JSON IMPORT / EXPORT ══════
+// ══════ MANAGER ROSTER ══════
+let mgrRoster = [];
+let mgrDetailIndex = -1;
+
+function mgrCalcStats(data) {
+  const prog = data.trainingProgress || {};
+  const conf = data.confidenceRatings || {};
+  const total = Object.keys(prog).length;
+  const done = Object.values(prog).filter(Boolean).length;
+  const pct = total ? Math.round(done / total * 100) : 0;
+  const needsHelp = Object.values(conf).filter(v => v === 'need-help').length;
+  const shakyCount = Object.values(conf).filter(v => v === 'shaky').length;
+  const dayBreakdown = days.map((d, di) => {
+    const dTotal = d.tasks.length;
+    const dDone = d.tasks.filter((_, ti) => prog[di+'-'+ti]).length;
+    return { label: d.label.split(' · ')[0], done: dDone, total: dTotal };
+  });
+  return { pct, done, total, needsHelp, shakyCount, dayBreakdown };
+}
+
+function mgrGetStatus(stats) {
+  if (stats.pct >= 80) return { label: 'On track', cls: 'good' };
+  if (stats.needsHelp > 0) return { label: 'Needs help', cls: 'risk' };
+  if (stats.pct < 30) return { label: 'Check in', cls: 'risk' };
+  return { label: 'In progress', cls: 'new' };
+}
+
+function mgrRenderRoster() {
+  const container = document.getElementById('mgrRosterRows');
+  if (!container) return;
+  if (!mgrRoster.length) {
+    container.innerHTML = '<div style="padding:40px 20px;text-align:center;color:var(--muted);"><div style="font-size:32px;margin-bottom:12px;">📂</div><div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px;">No trainees loaded yet</div><div style="font-size:13px;line-height:1.6;">Ask each trainee to export their session (⚙️ → Export session), then import those files here.</div></div>';
+    document.getElementById('mgrStatCount').textContent = '0';
+    document.getElementById('mgrStatAvg').textContent = '—';
+    document.getElementById('mgrStatAttn').textContent = '0';
+    return;
+  }
+  let totalPct = 0, attnCount = 0;
+  const rows = mgrRoster.map((data, idx) => {
+    const stats = mgrCalcStats(data);
+    const status = mgrGetStatus(stats);
+    totalPct += stats.pct;
+    if (status.cls === 'risk') attnCount++;
+    const dayDots = stats.dayBreakdown.map(d => {
+      const dpct = d.total ? Math.round(d.done / d.total * 100) : 0;
+      const col = dpct === 100 ? 'var(--green)' : dpct > 0 ? 'var(--gold)' : 'var(--border)';
+      return '<span title="' + d.label + ': ' + d.done + '/' + d.total + '" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:' + col + ';margin-right:3px;"></span>';
+    }).join('');
+    const confBadge = stats.needsHelp > 0
+      ? '<span style="font-size:11px;color:var(--red);font-weight:600;">⚠ ' + stats.needsHelp + ' need help</span>'
+      : stats.shakyCount > 0
+      ? '<span style="font-size:11px;color:#8a6a00;font-weight:600;">↕ ' + stats.shakyCount + ' shaky</span>'
+      : '<span style="font-size:11px;color:var(--green);font-weight:600;">✓ Clear</span>';
+    return '<div class="rep-row" style="display:grid;grid-template-columns:160px 80px 1fr 110px 100px 36px;gap:10px;align-items:center;cursor:pointer;" onclick="mgrOpenDetail(' + idx + ')">'
+      + '<div><div class="rep-name">' + (data.userName||'Unknown') + '</div><div class="rep-day" style="font-size:11px;color:var(--muted);margin-top:1px;">Imported ' + (data._importedAt||'—') + '</div></div>'
+      + '<div style="display:flex;align-items:center;gap:6px;"><div class="mini-bar" style="flex:1"><div class="mini-fill" style="width:' + stats.pct + '%"></div></div><div class="rep-pct">' + stats.pct + '%</div></div>'
+      + '<div style="line-height:1;">' + dayDots + '</div>'
+      + '<div>' + confBadge + '</div>'
+      + '<div><span class="sbadge ' + status.cls + '">' + status.label + '</span></div>'
+      + '<div><button onclick="event.stopPropagation();mgrRemoveTrainee(' + idx + ')" title="Remove" style="width:28px;height:28px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);cursor:pointer;font-size:12px;color:var(--muted);">✕</button></div>'
+      + '</div>';
+  });
+  container.innerHTML = rows.join('');
+  document.getElementById('mgrStatCount').textContent = mgrRoster.length;
+  document.getElementById('mgrStatAvg').textContent = Math.round(totalPct / mgrRoster.length) + '%';
+  document.getElementById('mgrStatAttn').textContent = attnCount;
+}
+
+function mgrOpenDetail(idx) {
+  const data = mgrRoster[idx];
+  if (!data) return;
+  mgrDetailIndex = idx;
+  const stats = mgrCalcStats(data);
+  document.getElementById('mgrDetailName').textContent = data.userName || 'Unknown';
+  document.getElementById('mgrDetailMeta').textContent = 'Exported ' + (data.exported ? new Date(data.exported).toLocaleString() : '—') + ' · ' + stats.done + '/' + stats.total + ' tasks complete';
+  const dayEl = document.getElementById('mgrDetailDays');
+  dayEl.innerHTML = stats.dayBreakdown.map(d => {
+    const dpct = d.total ? Math.round(d.done / d.total * 100) : 0;
+    const col = dpct === 100 ? 'var(--green)' : dpct > 50 ? 'var(--gold)' : dpct > 0 ? '#8a6a00' : 'var(--muted)';
+    return '<div style="background:var(--cream);border-radius:10px;padding:12px 14px;">'
+      + '<div style="font-size:12px;font-weight:600;color:var(--navy);margin-bottom:6px;">' + d.label + '</div>'
+      + '<div style="display:flex;align-items:center;gap:8px;"><div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden;"><div style="height:100%;width:' + dpct + '%;background:' + col + ';border-radius:3px;"></div></div>'
+      + '<span style="font-size:12px;font-weight:600;color:' + col + ';font-family:DM Mono,monospace;">' + dpct + '%</span></div>'
+      + '<div style="font-size:11px;color:var(--muted);margin-top:4px;">' + d.done + ' / ' + d.total + ' tasks</div></div>';
+  }).join('');
+  const conf = data.confidenceRatings || {};
+  const prog = data.trainingProgress || {};
+  const confEl = document.getElementById('mgrDetailConfidence');
+  const gaps = [];
+  days.forEach((d, di) => {
+    d.tasks.forEach((t, ti) => {
+      const c = conf[di + '-' + ti];
+      if (c === 'need-help' || c === 'shaky') gaps.push({ title: t.title, conf: c, day: d.label.split(' · ')[0] });
+    });
+  });
+  confEl.innerHTML = !gaps.length
+    ? '<div style="font-size:13px;color:var(--green);padding:10px 0;">✓ No confidence gaps reported</div>'
+    : gaps.map(g => '<div style="display:flex;align-items:center;gap:10px;padding:8px 12px;background:' + (g.conf === 'need-help' ? 'var(--red-light)' : 'var(--gold-pale)') + ';border-radius:8px;margin-bottom:6px;">'
+        + '<span style="font-size:16px;">' + (g.conf === 'need-help' ? '🚨' : '⚠️') + '</span>'
+        + '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--navy);">' + g.title + '</div><div style="font-size:11px;color:var(--muted);">' + g.day + '</div></div>'
+        + '<span style="font-size:11px;font-weight:600;color:' + (g.conf === 'need-help' ? 'var(--red)' : '#8a6a00') + ';">' + (g.conf === 'need-help' ? 'Needs help' : 'Shaky') + '</span></div>').join('');
+  const notesWrap = document.getElementById('mgrDetailNotesWrap');
+  const notesEl = document.getElementById('mgrDetailNotes');
+  const notes = data.trainingNotes || [];
+  if (notes.length) {
+    notesWrap.style.display = '';
+    notesEl.innerHTML = notes.map(n => '<div style="border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:10px;"><div style="font-size:11px;color:var(--muted);margin-bottom:3px;">' + (n.timestamp||'') + '</div>' + (n.text||'') + '</div>').join('');
+  } else {
+    notesWrap.style.display = 'none';
+  }
+  document.getElementById('mgrDetailPanel').style.display = '';
+  document.getElementById('mgrDetailPanel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function closeMgrDetail() {
+  document.getElementById('mgrDetailPanel').style.display = 'none';
+  mgrDetailIndex = -1;
+}
+
+function mgrRemoveTrainee(idx) {
+  if (!confirm('Remove ' + ((mgrRoster[idx] && mgrRoster[idx].userName) || 'this trainee') + ' from roster?')) return;
+  mgrRoster.splice(idx, 1);
+  if (mgrDetailIndex === idx) closeMgrDetail();
+  mgrRenderRoster();
+}
+
+function mgrClearRoster() {
+  if (!mgrRoster.length) return;
+  if (!confirm('Clear all trainees from the roster?')) return;
+  mgrRoster = [];
+  closeMgrDetail();
+  mgrRenderRoster();
+}
+
+function mgrImportTrainee() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.multiple = true;
+  input.onchange = function(e) {
+    const files = Array.from(e.target.files);
+    let loaded = 0;
+    files.forEach(function(file) {
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (!data.version) throw new Error('Invalid');
+          data._importedAt = new Date().toLocaleDateString();
+          if (data.mgrRoster && Array.isArray(data.mgrRoster)) {
+            data.mgrRoster.forEach(function(t) {
+              const ei = mgrRoster.findIndex(function(r) { return r.userName === t.userName; });
+              if (ei >= 0) mgrRoster[ei] = t; else mgrRoster.push(t);
+            });
+          } else {
+            const ei = mgrRoster.findIndex(function(r) { return r.userName === data.userName; });
+            if (ei >= 0) mgrRoster[ei] = data; else mgrRoster.push(data);
+          }
+          loaded++;
+          if (loaded === files.length) mgrRenderRoster();
+        } catch(err) {
+          alert('Could not load ' + file.name + ' — make sure it is a valid TRS session export.');
+        }
+      };
+      reader.readAsText(file);
+    });
+  };
+  input.click();
+}
+
+function mgrExportRoster() {
+  const candidateName = document.getElementById('candidateName') ? document.getElementById('candidateName').value || '' : '';
+  const iNotes = document.getElementById('interviewNotes') ? document.getElementById('interviewNotes').value || '' : '';
+  const coachingNotes = document.getElementById('coachingNotes') ? document.getElementById('coachingNotes').value || '' : '';
+  const payload = {
+    version: 4, exported: new Date().toISOString(),
+    userName: currentUserName, userRole: 'manager',
+    coachingNotes: coachingNotes,
+    interview: { candidateName: candidateName, scores: JSON.parse(JSON.stringify(starValues)), notes: iNotes },
+    mgrRoster: mgrRoster
+  };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'TRS-Manager-' + (currentUserName || 'mgr').replace(/\s+/g, '-') + '-' + new Date().toISOString().slice(0, 10) + '.json';
+  a.click();
+}
+
 function exportAppJson() {
   const candidateName = document.getElementById('candidateName') ? document.getElementById('candidateName').value || '' : '';
   const notes = document.getElementById('interviewNotes') ? document.getElementById('interviewNotes').value || '' : '';
   const coachingNotes = document.getElementById('coachingNotes') ? document.getElementById('coachingNotes').value || '' : '';
   const payload = {
-    version: 3,
+    version: 4,
     exported: new Date().toISOString(),
     userName: currentUserName,
     userRole: currentRole,
     trainingProgress: JSON.parse(JSON.stringify(doneState)),
     confidenceRatings: JSON.parse(JSON.stringify(confidenceState)),
     trainingNotes: savedNotes,
-    videoUrls: videoRegistry.reduce((acc, v) => { acc[v.id] = v.url; return acc; }, {}),
-    coachingNotes,
-    interview: { candidateName, scores: JSON.parse(JSON.stringify(starValues)), notes }
+    videoUrls: videoRegistry.reduce(function(acc, v) { acc[v.id] = v.url; return acc; }, {}),
+    coachingNotes: coachingNotes,
+    interview: { candidateName: candidateName, scores: JSON.parse(JSON.stringify(starValues)), notes: notes },
+    mgrRoster: currentRole === 'manager' ? mgrRoster : undefined
   };
-  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = `TRS-Session-${(currentUserName||'session').replace(/\s+/g,'-')}-${new Date().toISOString().slice(0,10)}.json`;
+  a.download = 'TRS-Session-' + (currentUserName || 'session').replace(/\s+/g, '-') + '-' + new Date().toISOString().slice(0, 10) + '.json';
   a.click();
 }
 
@@ -2185,6 +2421,12 @@ function importAppJson() {
         }
         // Restore user
         if (data.userName) { currentUserName = data.userName; currentRole = data.userRole||'trainee'; applyUserSession(); }
+        // Restore manager roster
+        if (data.mgrRoster && Array.isArray(data.mgrRoster)) {
+          mgrRoster = data.mgrRoster;
+          mgrRenderRoster();
+        }
+        if (data.userRole === 'manager') setManagerTabs(true);
         alert('Session loaded successfully.');
       } catch(err) {
         alert('Could not load file. Make sure it\'s a valid TRS session JSON.');
