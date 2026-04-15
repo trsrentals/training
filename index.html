@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRS — New Hire Training System</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
 <style>
 :root{--navy:#1a3a5c;--navy-dark:#112540;--gold:#c8a84b;--gold-light:#f0e4b8;--gold-pale:#faf6eb;--green:#1d6b4a;--green-light:#d4ede3;--red:#8b2020;--red-light:#f5dada;--cream:#f5f2eb;--white:#ffffff;--border:#ddd8cc;--text:#1a1a1a;--muted:#666;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -487,7 +486,7 @@ body.dark .email-pre{background:#151820;}
   </div>
   <div class="nav-search-wrap">
     <span class="nav-search-icon">🔍</span>
-    <input class="nav-search-input" placeholder="Search content…" readonly onclick="openSearch()" id="navSearchBar">
+    <input class="nav-search-input" placeholder="Search content…" readonly="" onclick="openSearch()" id="navSearchBar">
     <span class="nav-search-kbd">/</span>
   </div>
   <div class="nav-tabs">
@@ -578,7 +577,7 @@ body.dark .email-pre{background:#151820;}
 
 <!-- PLAYBOOK -->
 <div id="view-playbook" class="view">
-  <div class="page-header"><h1>Rental Playbook & Scripts</h1><p>Every client type, pitch, script, and objection handler. Tap to expand.</p></div>
+  <div class="page-header"><h1>Rental Playbook &amp; Scripts</h1><p>Every client type, pitch, script, and objection handler. Tap to expand.</p></div>
   <div class="pb-grid" id="pbGrid"></div>
 </div>
 
@@ -755,7 +754,7 @@ body.dark .email-pre{background:#151820;}
 
   <!-- SESSION IMPORT / EXPORT -->
   <div style="margin-top:24px;background:var(--navy);border-radius:14px;padding:18px 22px;">
-    <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Session file — save & share progress</div>
+    <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Session file — save &amp; share progress</div>
     <p style="font-size:13px;color:rgba(248,246,241,.65);margin-bottom:14px;line-height:1.6;">Export a JSON file to save the full session — training progress, notes, and interview scores. Import it on any device or share with another manager to pick up exactly where you left off.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="exportAppJson()" style="padding:9px 20px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">⬇ Export session (.json)</button>
@@ -876,9 +875,7 @@ body.dark .email-pre{background:#151820;}
 </div>
 
 <!-- FOOTER -->
-<div class="app-footer">
-  TRS New Hire Training System &nbsp;·&nbsp; v11 &nbsp;·&nbsp; Last updated April 2026 &nbsp;·&nbsp; <span id="footerUser"></span>
-</div>
+<div class="app-footer">TRS New Hire Training System &nbsp;·&nbsp; v15&nbsp; Last updated April 2026 &nbsp;·<span id="footerUser"></span></div>
 
 <script>
 const videoRegistry = [
@@ -3164,5 +3161,6 @@ document.getElementById('onloadName').addEventListener('keydown', e => { if(e.ke
 document.getElementById('onloadPin').addEventListener('keydown', e => { if(e.key==='Enter') startSession(); });
 
 </script>
-</body>
-</html>
+
+
+</body></html>
