@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="en"><head>
+<html lang="en">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TRS — New Hire Training System</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--navy:#1a3a5c;--navy-dark:#112540;--gold:#c8a84b;--gold-light:#f0e4b8;--gold-pale:#faf6eb;--green:#1d6b4a;--green-light:#d4ede3;--red:#8b2020;--red-light:#f5dada;--cream:#f5f2eb;--white:#ffffff;--border:#ddd8cc;--text:#1a1a1a;--muted:#666;}
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -415,7 +416,7 @@ body.dark .email-pre{background:#151820;}
 <body><!-- ONLOAD MODAL -->
 <div class="onload-overlay" id="onloadOverlay">
   <div class="onload-modal">
-    <div class="onload-logo">TRS</div>
+    <div class="onload-logo" id="onloadLogo" onclick="devTripleClick()" style="cursor:pointer;" title="">TRS</div>
     <h2>Welcome to TRS Training</h2>
     <p>Enter your name so reports and exports are labeled correctly.</p>
     <input class="onload-input" id="onloadName" type="text" placeholder="Your full name" autocomplete="name">
@@ -481,12 +482,12 @@ body.dark .email-pre{background:#151820;}
 
 <nav>
   <div class="nav-brand">
-    <div class="nav-logo">TRS</div>
+    <div class="nav-logo" id="navLogo" onclick="devTripleClick()" title="">TRS</div>
     <span class="nav-title">New Hire Training</span>
   </div>
   <div class="nav-search-wrap">
     <span class="nav-search-icon">🔍</span>
-    <input class="nav-search-input" placeholder="Search content…" readonly="" onclick="openSearch()" id="navSearchBar">
+    <input class="nav-search-input" placeholder="Search content…" readonly onclick="openSearch()" id="navSearchBar">
     <span class="nav-search-kbd">/</span>
   </div>
   <div class="nav-tabs">
@@ -497,7 +498,9 @@ body.dark .email-pre{background:#151820;}
     <button class="nav-tab mgr-only" onclick="showView('emails',this)" id="tab-emails" style="display:none;">Emails</button>
     <button class="nav-tab mgr-only" onclick="showView('manager',this)" id="tab-manager" style="display:none;">Manager</button>
     <button class="nav-tab mgr-only" onclick="showView('coaching',this)" id="tab-coaching" style="display:none;">Coaching</button>
+    <button class="nav-tab mgr-only" onclick="showView('prescreen',this)" id="tab-prescreen" style="display:none;">Pre-Screen</button>
     <button class="nav-tab mgr-only" onclick="showView('interview',this)" id="tab-interview" style="display:none;">Interview</button>
+    <button class="nav-tab mgr-only" onclick="showView('onboarding',this)" id="tab-onboarding" style="display:none;">Onboarding</button>
     <button class="nav-tab mgr-only" onclick="showView('videos',this)" id="tab-videos" style="display:none;">📹 Videos</button>
   </div>
   <div style="display:flex;align-items:center;gap:6px;">
@@ -577,7 +580,7 @@ body.dark .email-pre{background:#151820;}
 
 <!-- PLAYBOOK -->
 <div id="view-playbook" class="view">
-  <div class="page-header"><h1>Rental Playbook &amp; Scripts</h1><p>Every client type, pitch, script, and objection handler. Tap to expand.</p></div>
+  <div class="page-header"><h1>Rental Playbook & Scripts</h1><p>Every client type, pitch, script, and objection handler. Tap to expand.</p></div>
   <div class="pb-grid" id="pbGrid"></div>
 </div>
 
@@ -664,12 +667,84 @@ body.dark .email-pre{background:#151820;}
 </div>
 
 <!-- ══════════ INTERVIEW VIEW ══════════ -->
-<div id="view-interview" class="view">
-  <div class="page-header">
-    <h1>Interview System — AV Sales Rep</h1>
-    <p>Built for hiring meeting planners transitioning into AV sales. Two STAR frameworks, behavioral questions, and a scoring scorecard.</p>
+<div id="view-prescreen" class="view">
+  <!-- HEADER -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+    <div>
+      <h1 style="font-size:24px;font-weight:600;color:var(--navy);margin:0 0 4px;">Pre-Screen Interview — AV Sales Rep</h1>
+      <p style="font-size:13px;color:var(--muted);margin:0;">Quick validation check · ~15 minutes · Go / No-Go decision</p>
+    </div>
   </div>
 
+  <!-- CANDIDATE INFO -->
+  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:220px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Candidate name</div>
+      <input id="prescreenCandidateName" type="text" placeholder="e.g. Jane Smith" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div style="flex:1;min-width:220px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Pre-Screen Score</div>
+      <div style="font-size:28px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;" id="prescreenTotal">0 / 30</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">20+ = Pass to Phase 1</div>
+    </div>
+  </div>
+
+  <!-- INTERVIEW PITCH -->
+  <div style="background:var(--navy);border-radius:14px;padding:22px 26px;margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Opening — set expectations</div>
+    <div style="font-size:15px;color:#f8f6f1;line-height:1.8;font-style:italic;">"Hi [Name]. Thanks for your interest in joining TRS. I've got about 15 minutes to ask some quick questions to make sure this role is a good fit. Sound good?"</div>
+  </div>
+
+  <!-- QUICK REFERENCE BOX -->
+  <div style="background:var(--gold-pale);border-radius:14px;border:1px solid var(--gold-light);padding:18px 22px;margin-bottom:20px;">
+    <div style="font-size:11px;font-weight:600;color:#7a5c00;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">Pre-Screen Scoring</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--green);font-family:'DM Mono',monospace;">20+</div><div style="font-size:12px;color:#555;margin-top:3px;"><strong>Pass ✓</strong><br>Advance to Phase 1</div></div>
+      <div style="text-align:center;"><div style="font-size:18px;font-weight:700;color:var(--red);font-family:'DM Mono',monospace;">&lt;20</div><div style="font-size:12px;color:#555;margin-top:3px;"><strong>No-Go ✗</strong><br>Not the right fit</div></div>
+    </div>
+    <div style="font-size:13px;color:#666;margin-top:12px;">Each question rates 0-6 (6 possible misalignments, 0 = strong fit). Lower score = better candidate.</div>
+  </div>
+
+  <!-- VALIDATION QUESTION CARDS -->
+  <div id="prescreenSections"></div>
+
+  <!-- SUMMARY & DECISION -->
+  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-top:16px;">
+    <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Pre-Screen Decision</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Recommendation</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div id="pdec-pass" onclick="setPrescreenDecision('pass')" style="cursor:pointer;padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);transition:all .18s;">✓ Pass to Phase 1</div>
+        <div id="pdec-nopass" onclick="setPrescreenDecision('nopass')" style="cursor:pointer;padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);transition:all .18s;">✗ No-Go</div>
+        <div id="pdec-maybe" onclick="setPrescreenDecision('maybe')" style="cursor:pointer;padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);transition:all .18s;">↗ Maybe — deeper assessment</div>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Key concerns / Notes</div>
+      <textarea id="prescreenNotes" placeholder="Red flags, areas of concern, why they passed or didn't..." style="width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;"></textarea>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <button onclick="exportPrescreenPdf()" style="padding:9px 18px;border-radius:10px;background:var(--navy);color:var(--gold);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">📄 Export PDF</button>
+      <button onclick="exportPrescreenTxt()" style="padding:9px 18px;border-radius:10px;background:var(--white);color:var(--navy);font-size:13px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;">📝 Export TXT</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════════════════ -->
+<div id="view-interview" class="view">
+  <!-- PHASE TOGGLE -->
+  <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:24px;">
+    <div>
+      <h1 style="font-size:24px;font-weight:600;color:var(--navy);margin:0 0 4px;">Interview System — AV Sales Rep</h1>
+      <p style="font-size:13px;color:var(--muted);margin:0;" id="interviewSubtitle">Phase 1 · STAR Method — structured behavioral questions and scoring scorecard</p>
+    </div>
+    <div style="display:flex;gap:6px;background:var(--cream);border-radius:12px;padding:4px;border:1.5px solid var(--border);">
+      <button id="phaseBtn1" onclick="switchPhase(1)" style="padding:7px 18px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--gold);transition:all .18s;">Phase 1 · STAR</button>
+      <button id="phaseBtn2" onclick="switchPhase(2)" style="padding:7px 18px;border-radius:9px;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:'DM Sans',sans-serif;background:transparent;color:var(--muted);transition:all .18s;">Phase 2 · Laz Method</button>
+    </div>
+  </div>
+
+  <div id="starPhaseWrap">
   <!-- CANDIDATE PITCH -->
   <div style="background:var(--navy);border-radius:14px;padding:22px 26px;margin-bottom:20px;">
     <div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Why meeting planners make ideal TRS sales reps — your opening pitch to the candidate</div>
@@ -710,25 +785,26 @@ body.dark .email-pre{background:#151820;}
     <div style="font-size:13px;color:#666;margin-top:12px;">If they can't get to a number or specific outcome on the Result, probe: <em>"What did that lead to?" / "How did you measure success?" / "How much revenue / time / clients did that affect?"</em></div>
   </div>
 
-  <!-- QUESTION SETS -->
+  <!-- CANDIDATE INFO & SUMMARY -->
+  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:220px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Candidate name</div>
+      <input id="candidateName" type="text" placeholder="e.g. Jane Smith" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
+    </div>
+    <div style="flex:1;min-width:220px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Interview score</div>
+      <div style="font-size:28px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;" id="scorecardTotal">0 / 50</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">40+ = strong hire · 30–39 = train up</div>
+    </div>
+  </div>
+
+  <!-- QUESTION CARDS (STAR METHOD) -->
   <div id="interviewSections"></div>
 
-  <!-- SCORECARD -->
-  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-top:8px;">
-    <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Candidate scorecard</div>
-    <div id="scorecardRows"></div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:18px;padding-top:14px;border-top:1px solid var(--border);">
-      <div>
-        <div style="font-size:13px;font-weight:600;color:var(--navy);">Total score</div>
-        <div style="font-size:11px;color:var(--muted);">Out of 50 · 40+ = strong hire · 30–39 = train up · below 30 = pass</div>
-      </div>
-      <div style="font-size:32px;font-weight:600;color:var(--navy);font-family:'DM Mono',monospace;" id="scorecardTotal">0 / 50</div>
-    </div>
-    <div style="margin-top:14px;">
-      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Candidate name</div>
-      <input id="candidateName" type="text" placeholder="e.g. Jane Smith" style="width:100%;max-width:320px;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
-    </div>
-    <div style="margin-top:14px;">
+  <!-- OVERALL NOTES & DECISION -->
+  <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-top:16px;">
+    <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:16px;letter-spacing:.04em;text-transform:uppercase;font-size:11px;">Summary & decision</div>
+    <div style="margin-bottom:14px;">
       <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Hiring decision</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <div id="dec-hire" onclick="setDecision('hire')" style="cursor:pointer;padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);transition:all .18s;">✓ Strong hire</div>
@@ -736,11 +812,11 @@ body.dark .email-pre{background:#151820;}
         <div id="dec-pass" onclick="setDecision('pass')" style="cursor:pointer;padding:8px 18px;border-radius:30px;border:1.5px solid var(--border);font-size:13px;font-weight:500;color:var(--muted);transition:all .18s;">✗ Pass</div>
       </div>
     </div>
-    <div style="margin-top:14px;">
-      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Interview notes</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Overall interview notes</div>
       <textarea id="interviewNotes" placeholder="Key observations, red flags, things to follow up on in a second interview..." style="width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;"></textarea>
     </div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;">
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
       <button onclick="exportPdf()" style="padding:9px 18px;border-radius:10px;background:var(--navy);color:var(--gold);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">📄 Export PDF</button>
       <button onclick="exportTxt()" style="padding:9px 18px;border-radius:10px;background:var(--white);color:var(--navy);font-size:13px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;">📝 Export TXT</button>
     </div>
@@ -752,9 +828,314 @@ body.dark .email-pre{background:#151820;}
     <div id="starExamples"></div>
   </div>
 
+  </div>
+  <!-- ══ LAZ METHOD PHASE 2 ══ -->
+  <div id="lazPhaseWrap" style="display:none;">
+
+    <!-- TRANSITION CARD -->
+    <div style="background:var(--navy);border-radius:14px;padding:22px 26px;margin-bottom:20px;">
+      <div style="font-size:11px;font-weight:600;color:var(--gold);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">Transition script — use this to shift gears</div>
+      <div style="font-size:15px;color:#f8f6f1;line-height:1.8;font-style:italic;">"I appreciate the formal run-through. To be honest, I value my time — and yours — more than anything else today. I've got kids, a life, and a business that runs 24/7, so I like to skip the 'rehearsed' stuff and just talk about how we actually fit together."</div>
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.1);font-size:12px;color:rgba(248,246,241,.5);">Say this naturally. Let them exhale. The shift in energy is intentional — you want them off-script.</div>
+    </div>
+
+    <!-- CANDIDATE NAME (shared with Phase 1) -->
+    <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:18px 22px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+      <div style="flex:1;min-width:220px;">
+        <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Candidate name</div>
+        <input id="lazCandidateName" type="text" placeholder="e.g. Jane Smith" oninput="syncCandidateNames('laz')" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;transition:border-color .15s;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
+      </div>
+      <div style="font-size:12px;color:var(--muted);padding-top:18px;">Name syncs with Phase 1 scorecard</div>
+    </div>
+
+    <!-- QUESTION CARDS -->
+    <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;">Life-cycle & operational flow questions</div>
+
+    <!-- Q1 · Excitement -->
+    <div class="laz-card" id="lazCard-excitement">
+      <div class="laz-card-head" onclick="toggleLazCard('excitement')">
+        <div class="laz-qnum">01</div>
+        <div style="flex:1;">
+          <div class="laz-category">Excitement & Fit</div>
+          <div class="laz-question">"Think back to the job you actually enjoyed the most. What was the vibe? Was it the pace, the people, or the challenge?"</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-excitement" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('excitement','green')" title="Strong fit">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('excitement','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('excitement','red')" title="Misaligned">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+        <div class="laz-intent"><strong>Hidden intent:</strong> Gauges if they thrive in high-stakes AV/rental environments or prefer a desk-bound routine. You want someone who lights up at "pace" and "challenge" — not "quiet" and "predictable."</div>
+        <div class="laz-listen-grid">
+          <div class="laz-listen green"><div class="laz-listen-title">✓ Green signals</div>Mentions energy, urgency, variety. Talks about being "in the mix." Uses words like fast-moving, hands-on, never the same day twice.</div>
+          <div class="laz-listen red"><div class="laz-listen-title">✗ Red signals</div>Says they liked it because it was "stable," "predictable," or they "knew what to expect every day." That's not this job.</div>
+        </div>
+        <div style="margin-top:14px;">
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Alignment note</div>
+          <textarea class="laz-note-area" id="lazNote-excitement" placeholder="What did they say? What's your read?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 · Financial Floor -->
+    <div class="laz-card" id="lazCard-floor">
+      <div class="laz-card-head" onclick="toggleLazCard('floor')">
+        <div class="laz-qnum">02</div>
+        <div style="flex:1;">
+          <div class="laz-category">Financial Floor</div>
+          <div class="laz-question">"Everyone has a 'happy' number — the salary where the bills are paid, you aren't stressed, and you aren't looking for the next exit. What is that number for you?"</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-floor" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('floor','green')" title="Strong fit">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('floor','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('floor','red')" title="Misaligned">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+        <div class="laz-intent"><strong>Hidden intent:</strong> Prevents the revolving door. If their floor is higher than what's realistic in ramp-up months, they'll be stressed and gone before they hit stride. You need to know this up front.</div>
+        <div class="laz-listen-grid">
+          <div class="laz-listen green"><div class="laz-listen-title">✓ Green signals</div>Gives a specific, realistic number. Is transparent about their expenses. Doesn't hedge or inflate. Shows they've thought it through.</div>
+          <div class="laz-listen red"><div class="laz-listen-title">✗ Red signals</div>Refuses to name a number ("I'm flexible"). Gives a number that far exceeds base + realistic ramp commission. They're setting themselves up to bail.</div>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Their "happy" number</div>
+            <input id="lazFloorNum" type="text" placeholder="e.g. $48,000 / yr" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Alignment note</div>
+            <textarea class="laz-note-area" id="lazNote-floor" placeholder="Realistic? Red flag?" style="min-height:42px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 · Financial Ceiling -->
+    <div class="laz-card" id="lazCard-ceiling">
+      <div class="laz-card-head" onclick="toggleLazCard('ceiling')">
+        <div class="laz-qnum">03</div>
+        <div style="flex:1;">
+          <div class="laz-category">Financial Ceiling</div>
+          <div class="laz-question">"Now — what is the goal number? Where do you want to be in 3 years to feel like you are truly exceeding your own goals?"</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-ceiling" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('ceiling','green')" title="Strong fit">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('ceiling','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('ceiling','red')" title="Misaligned">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+        <div class="laz-intent"><strong>Hidden intent:</strong> Identifies ambition. You want someone whose 3-year number is achievable on commission — it keeps them hungry. If their goal is $200K and top performers here hit $75K, that's a mismatch you need to catch now.</div>
+        <div class="laz-listen-grid">
+          <div class="laz-listen green"><div class="laz-listen-title">✓ Green signals</div>Has a specific number with a rationale. Ties it to a life goal (house, family, debt-free). The number is ambitious but achievable with strong performance.</div>
+          <div class="laz-listen red"><div class="laz-listen-title">✗ Red signals</div>No target at all ("I'll just see how it goes"). Or a wildly unrealistic number that signals they don't understand commission-based comp yet.</div>
+        </div>
+        <div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Their 3-year goal</div>
+            <input id="lazCeilingNum" type="text" placeholder="e.g. $80,000 / yr" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);outline:none;" onfocus="this.style.borderColor='var(--navy)'" onblur="this.style.borderColor='var(--border)'">
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Alignment note</div>
+            <textarea class="laz-note-area" id="lazNote-ceiling" placeholder="Achievable here? Aligned?" style="min-height:42px;"></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 · 24/7 Reality -->
+    <div class="laz-card" id="lazCard-availability">
+      <div class="laz-card-head" onclick="toggleLazCard('availability')">
+        <div class="laz-qnum">04</div>
+        <div style="flex:1;">
+          <div class="laz-category">The 24/7 Reality</div>
+          <div class="laz-question">"We are a 24/7 industry. Sometimes clients email at 9 PM on a Saturday. Are you the type that needs a hard clock-out — which is fine — or do you prefer the flexibility to manage things as they pop up? I just need transparency."</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-availability" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('availability','green')" title="Strong fit">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('availability','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('availability','red')" title="Misaligned">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+        <div class="laz-intent"><strong>Hidden intent:</strong> Aligns expectations early and filters out people who will silently resent the job. The phrase "which is fine" is deliberate — it disarms them so they answer honestly instead of telling you what they think you want to hear.</div>
+        <div class="laz-listen-grid">
+          <div class="laz-listen green"><div class="laz-listen-title">✓ Green signals</div>"I'm used to it." / "I treat my phone like a tool, not a leash." / Talks about managing their own schedule rather than watching a clock.</div>
+          <div class="laz-listen red"><div class="laz-listen-title">✗ Red signals</div>Immediately defensive about weekends or after-hours. "I have firm boundaries around my personal time." That's a legitimate value — just not for this role.</div>
+        </div>
+        <div style="margin-top:14px;">
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Availability vibe — their exact words</div>
+          <textarea class="laz-note-area" id="lazNote-availability" placeholder="Quote them directly if possible — this is a retention predictor..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 · Self-Management -->
+    <div class="laz-card" id="lazCard-selfmgmt">
+      <div class="laz-card-head" onclick="toggleLazCard('selfmgmt')">
+        <div class="laz-qnum">05</div>
+        <div style="flex:1;">
+          <div class="laz-category">Self-Management Indicator</div>
+          <div class="laz-question">"If I gave you a goal and didn't check in on you for a week, what would I find on Friday afternoon — a finished project, a list of reasons why it couldn't be done, or a dozen questions in my inbox?"</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-selfmgmt" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('selfmgmt','green')" title="Strong fit">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('selfmgmt','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('selfmgmt','red')" title="Misaligned">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+        <div class="laz-intent"><strong>Hidden intent:</strong> Identifies ability to self-manage and replicate performance without constant oversight. The three options in the question do the work for you — watch which one they laugh at, which they pause on, and what they say next.</div>
+        <div class="laz-listen-grid">
+          <div class="laz-listen green"><div class="laz-listen-title">✓ Green signals</div>Laughs and picks "finished." Then backs it up with a specific story unprompted. Acknowledges they might ask one or two smart questions early, but owns the result.</div>
+          <div class="laz-listen red"><div class="laz-listen-title">✗ Red signals</div>Immediately qualifies with "it depends on the project." Jokes that they'd have questions. Can't name a single time they drove something to completion alone.</div>
+        </div>
+        <div style="margin-top:14px;">
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Alignment note</div>
+          <textarea class="laz-note-area" id="lazNote-selfmgmt" placeholder="What did they say? Did they back it up with a story?"></textarea>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Q6 · FORD Remote Reality Check -->
+    <div class="laz-card" id="lazCard-ford">
+      <div class="laz-card-head" onclick="toggleLazCard('ford')">
+        <div class="laz-qnum" style="background:#2a1a5c;">06</div>
+        <div style="flex:1;">
+          <div class="laz-category" style="color:#7c5cbf;">Remote Reality · FORD Check</div>
+          <div class="laz-question">"Since this is a remote role, I'm big on transparency. I've worked from home and I know the drill — sometimes the dog barks or the kids need something. But at the end of the day, I need to know this seat is covered. What's your command center look like?"</div>
+        </div>
+        <div class="laz-fit-badge" id="lazFit-ford" onclick="event.stopPropagation()">
+          <button class="fit-btn green" onclick="setLazFit('ford','green')" title="Remote-ready">●</button>
+          <button class="fit-btn yellow" onclick="setLazFit('ford','yellow')" title="Uncertain">●</button>
+          <button class="fit-btn red" onclick="setLazFit('ford','red')" title="Not set up for remote">●</button>
+        </div>
+        <div class="laz-chev">›</div>
+      </div>
+      <div class="laz-card-body">
+
+        <!-- WFH Icebreaker intent -->
+        <div class="laz-intent" style="border-left-color:#7c5cbf;"><strong>Why this matters:</strong> Remote isn't a perk for this role — it's the operating model. You need to know if their home environment will support a 24/7 plugged-in industry, or if isolation and distraction will quietly erode their performance. FORD (Family · Occupation · Recreation · Dreams) gives you the full picture without a formal interrogation.</div>
+
+        <!-- FORD Grid -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+
+          <!-- F · Family/Home -->
+          <div style="background:#f3f0fb;border-radius:10px;padding:14px 16px;border-left:3px solid #7c5cbf;">
+            <div style="font-size:10px;font-weight:700;color:#5a3a9c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">F · Family / Home Energy</div>
+            <div style="font-size:13px;color:#2a1a5c;font-weight:600;font-style:italic;margin-bottom:8px;line-height:1.5;">"I'm a family man, so I get it. What's the energy of your home like during work hours — quiet and focused, or more of a circus?"</div>
+            <div style="font-size:12px;color:#5a3a9c;margin-bottom:8px;line-height:1.6;"><strong>Listen for:</strong> Do they have a door they can close? Kids at home with no childcare? Constant interruptions described as normal? Partners who don't respect work time?</div>
+            <textarea class="laz-note-area" id="lazNote-ford-family" placeholder="Home setup, family situation, energy level during work hours..." style="border-color:#c4b0e8;"></textarea>
+          </div>
+
+          <!-- O · Occupation/Remote History -->
+          <div style="background:#f3f0fb;border-radius:10px;padding:14px 16px;border-left:3px solid #7c5cbf;">
+            <div style="font-size:10px;font-weight:700;color:#5a3a9c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">O · Occupation / Remote History</div>
+            <div style="font-size:13px;color:#2a1a5c;font-weight:600;font-style:italic;margin-bottom:8px;line-height:1.5;">"Tell me about your last remote experience. What was the hardest part about staying productive when no one was looking over your shoulder?"</div>
+            <div style="font-size:12px;color:#5a3a9c;margin-bottom:8px;line-height:1.6;"><strong>Listen for:</strong> Owned the struggle and solved it, or still blaming the environment? First-timer who sounds naive? Or a vet with real systems — dedicated space, set hours, clear rituals?</div>
+            <textarea class="laz-note-area" id="lazNote-ford-occupation" placeholder="Remote history, productivity approach, biggest challenge they named..." style="border-color:#c4b0e8;"></textarea>
+          </div>
+
+          <!-- R · Recreation/Work-Life Separation -->
+          <div style="background:#f3f0fb;border-radius:10px;padding:14px 16px;border-left:3px solid #7c5cbf;">
+            <div style="font-size:10px;font-weight:700;color:#5a3a9c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">R · Recreation / Work-Life Line</div>
+            <div style="font-size:13px;color:#2a1a5c;font-weight:600;font-style:italic;margin-bottom:8px;line-height:1.5;">"When the laptop closes, how do you separate work life from home life? Your office being 10 feet from your bed can burn you out fast — what's your reset?"</div>
+            <div style="font-size:12px;color:#5a3a9c;margin-bottom:8px;line-height:1.6;"><strong>Listen for:</strong> Do they have any rituals, exercise, hard stops? Or does work just bleed into everything and they call that "dedicated"? Burnout in month 3 is expensive.</div>
+            <textarea class="laz-note-area" id="lazNote-ford-recreation" placeholder="How they decompress, boundary rituals, burnout risk signals..." style="border-color:#c4b0e8;"></textarea>
+          </div>
+
+          <!-- D · Dreams/Connectivity Plan B -->
+          <div style="background:#f3f0fb;border-radius:10px;padding:14px 16px;border-left:3px solid #7c5cbf;">
+            <div style="font-size:10px;font-weight:700;color:#5a3a9c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">D · Dependability / Plan B</div>
+            <div style="font-size:13px;color:#2a1a5c;font-weight:600;font-style:italic;margin-bottom:8px;line-height:1.5;">"In a 24/7 industry, if your internet goes down at 10 AM on a Tuesday, what's your Plan B? Hotspot, coffee shop nearby — or are you just offline?"</div>
+            <div style="font-size:12px;color:#5a3a9c;margin-bottom:8px;line-height:1.6;"><strong>Listen for:</strong> Immediate, specific answer = problem-solver. Blank stare or "I'd call my provider" = clock-out mentality. This question separates operators from passengers.</div>
+            <textarea class="laz-note-area" id="lazNote-ford-dependability" placeholder="Their Plan B, problem-solver vs clock-out vibe, any red flags..." style="border-color:#c4b0e8;"></textarea>
+          </div>
+        </div>
+
+        <!-- Remote Capability Matrix -->
+        <div style="background:var(--white);border-radius:10px;border:1.5px solid #c4b0e8;padding:16px 18px;margin-bottom:14px;">
+          <div style="font-size:11px;font-weight:700;color:#5a3a9c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:14px;">Remote capability matrix — quick calibration</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+
+            <!-- Dedicated workspace -->
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#2a1a5c;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Dedicated workspace</div>
+              <div style="display:flex;flex-direction:column;gap:4px;" id="fordWorkspace">
+                <label class="ford-radio-label"><input type="radio" name="fordWorkspace" value="dedicated" onchange="updateFordMatrix()"> <span>Private room / door closes</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordWorkspace" value="semi" onchange="updateFordMatrix()"> <span>Shared but workable</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordWorkspace" value="none" onchange="updateFordMatrix()"> <span>Kitchen table / no separation</span></label>
+              </div>
+            </div>
+
+            <!-- Remote experience -->
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#2a1a5c;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Remote experience</div>
+              <div style="display:flex;flex-direction:column;gap:4px;" id="fordRemoteExp">
+                <label class="ford-radio-label"><input type="radio" name="fordRemoteExp" value="veteran" onchange="updateFordMatrix()"> <span>Veteran — has systems</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordRemoteExp" value="some" onchange="updateFordMatrix()"> <span>Some experience</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordRemoteExp" value="new" onchange="updateFordMatrix()"> <span>New to remote</span></label>
+              </div>
+            </div>
+
+            <!-- Connectivity backup -->
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#2a1a5c;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;">Connectivity backup</div>
+              <div style="display:flex;flex-direction:column;gap:4px;" id="fordConnectivity">
+                <label class="ford-radio-label"><input type="radio" name="fordConnectivity" value="ready" onchange="updateFordMatrix()"> <span>Hotspot / coffee shop ready</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordConnectivity" value="partial" onchange="updateFordMatrix()"> <span>Has a plan but vague</span></label>
+                <label class="ford-radio-label"><input type="radio" name="fordConnectivity" value="none" onchange="updateFordMatrix()"> <span>No backup — would go offline</span></label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Remote Readiness Score -->
+        <div style="display:flex;align-items:center;gap:16px;background:var(--cream);border-radius:10px;padding:14px 16px;border:1.5px solid var(--border);">
+          <div style="flex:1;">
+            <div style="font-size:11px;font-weight:600;color:#2a1a5c;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;">Remote readiness score</div>
+            <div style="font-size:12px;color:var(--muted);" id="fordReadinessLabel">Complete the matrix above to calculate</div>
+          </div>
+          <div style="font-size:32px;font-weight:700;font-family:'DM Mono',monospace;min-width:60px;text-align:right;" id="fordReadinessScore">—</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- LAZ FIT SUMMARY -->
+    <div style="background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-top:6px;">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;">Laz Method — fit summary</div>
+      <div id="lazFitSummary" style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px;">
+        <!-- Rendered by JS -->
+      </div>
+      <div style="padding:14px 16px;border-radius:10px;border:1.5px solid var(--border);background:var(--cream);" id="lazVerdictBox">
+        <div style="font-size:12px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Overall vibe check</div>
+        <div style="font-size:22px;font-weight:700;" id="lazVerdictText">—</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="lazVerdictSub">Mark the 5 fit indicators above to see your read</div>
+      </div>
+      <div style="margin-top:16px;">
+        <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Overall alignment notes</div>
+        <textarea id="lazAlignmentNotes" placeholder="Gut read on longevity, red flags not captured above, anything that stood out..." style="width:100%;min-height:90px;border:1.5px solid var(--border);border-radius:10px;padding:12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;">
+        <button onclick="exportLazTxt()" style="padding:9px 18px;border-radius:10px;background:var(--navy);color:var(--gold);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">📄 Export Laz Notes</button>
+        <button onclick="exportLazPdf()" style="padding:9px 18px;border-radius:10px;background:var(--white);color:var(--navy);font-size:13px;font-weight:600;border:1.5px solid var(--border);cursor:pointer;font-family:'DM Sans',sans-serif;">🖨 Print / PDF</button>
+      </div>
+    </div>
+
+  </div>
+  <!-- ══ END LAZ PHASE 2 ══ -->
+
   <!-- SESSION IMPORT / EXPORT -->
   <div style="margin-top:24px;background:var(--navy);border-radius:14px;padding:18px 22px;">
-    <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Session file — save &amp; share progress</div>
+    <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;">Session file — save & share progress</div>
     <p style="font-size:13px;color:rgba(248,246,241,.65);margin-bottom:14px;line-height:1.6;">Export a JSON file to save the full session — training progress, notes, and interview scores. Import it on any device or share with another manager to pick up exactly where you left off.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <button onclick="exportAppJson()" style="padding:9px 20px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">⬇ Export session (.json)</button>
@@ -812,7 +1193,386 @@ body.dark .email-pre{background:#151820;}
 .star-section p{font-size:14px;color:#333;line-height:1.75;}
 .star-section ul{font-size:14px;color:#333;line-height:1.9;padding-left:18px;}
 .star-conclusion{background:var(--green-light);border-radius:10px;padding:14px;font-size:14px;color:#1a3a28;line-height:1.65;}
+/* STAR PHASE 1 — CARD LAYOUT */
+.star-card{background:var(--white);border-radius:14px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;transition:border-color .18s;}
+.star-card.open{border-color:var(--navy);}
+.star-card-head{display:flex;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer;}
+.star-qnum{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:var(--gold);background:var(--navy);padding:4px 8px;border-radius:6px;flex-shrink:0;margin-top:2px;}
+.star-category{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.star-question{font-size:14px;font-weight:600;color:var(--navy);line-height:1.5;font-style:italic;}
+.star-chev{font-size:20px;color:var(--muted);margin-left:8px;flex-shrink:0;transition:transform .2s;line-height:1;margin-top:2px;}
+.star-card.open .star-chev{transform:rotate(90deg);}
+.star-card-body{display:none;border-top:1px solid var(--border);padding:20px 22px;}
+.star-card.open .star-card-body{display:block;}
+.star-rating-head{display:flex;gap:2px;flex-shrink:0;}
+.star-dot{font-size:16px;color:var(--gold);transition:opacity .15s;}
+.star-dot.active{opacity:1 !important;}
+.star-note-area{width:100%;min-height:70px;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;transition:border-color .15s;}
+.star-note-area:focus{border-color:var(--navy);}
+/* LAZ METHOD PHASE 2 */
+.laz-card{background:var(--white);border-radius:14px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;transition:border-color .18s;}
+.laz-card.open{border-color:var(--navy);}
+.laz-card-head{display:flex;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer;}
+.laz-qnum{font-family:'DM Mono',monospace;font-size:11px;font-weight:600;color:var(--gold);background:var(--navy);padding:4px 8px;border-radius:6px;flex-shrink:0;margin-top:2px;}
+.laz-category{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.laz-question{font-size:14px;font-weight:600;color:var(--navy);line-height:1.5;font-style:italic;}
+.laz-chev{font-size:20px;color:var(--muted);margin-left:8px;flex-shrink:0;transition:transform .2s;line-height:1;margin-top:2px;}
+.laz-card.open .laz-chev{transform:rotate(90deg);}
+.laz-card-body{display:none;border-top:1px solid var(--border);padding:20px 22px;}
+.laz-card.open .laz-card-body{display:block;}
+.laz-intent{font-size:13px;color:#444;line-height:1.7;background:var(--cream);border-radius:10px;padding:12px 14px;margin-bottom:14px;border-left:3px solid var(--gold);}
+.laz-listen-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:4px;}
+.laz-listen{border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.7;}
+.laz-listen.green{background:var(--green-light);color:#1a3a28;}
+.laz-listen.red{background:var(--red-light);color:#4a1010;}
+.laz-listen-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;}
+.laz-note-area{width:100%;min-height:60px;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;transition:border-color .15s;}
+.laz-note-area:focus{border-color:var(--navy);}
+.laz-fit-badge{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-top:4px;}
+.fit-btn{width:22px;height:22px;border-radius:50%;border:2px solid transparent;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .15s;opacity:.3;padding:0;}
+.fit-btn.green{color:#1d6b4a;}
+.fit-btn.yellow{color:#8a6a00;}
+.fit-btn.red{color:#8b2020;}
+.fit-btn.active{opacity:1;transform:scale(1.25);border-color:currentColor;}
+.laz-summary-item{text-align:center;padding:10px 8px;border-radius:10px;border:1.5px solid var(--border);background:var(--cream);}
+.laz-summary-dot{font-size:22px;margin-bottom:4px;}
+.laz-summary-label{font-size:10px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;}
+@media(max-width:600px){.laz-listen-grid{grid-template-columns:1fr;}}
+/* FORD MATRIX */
+.ford-radio-label{display:flex;align-items:center;gap:7px;font-size:12px;color:#2a1a5c;cursor:pointer;padding:3px 0;line-height:1.4;}
+.ford-radio-label input[type=radio]{accent-color:#7c5cbf;width:14px;height:14px;flex-shrink:0;}
+.ford-radio-label:hover span{color:#5a3a9c;}
+/* PRE-SCREEN VALIDATION CARDS */
+.prescreen-card{background:var(--white);border-radius:14px;border:1.5px solid var(--border);margin-bottom:12px;overflow:hidden;transition:border-color .18s;}
+.prescreen-card.open{border-color:var(--navy);}
+.prescreen-card-head{display:flex;align-items:flex-start;gap:12px;padding:16px 18px;cursor:pointer;}
+.prescreen-num{font-family:'DM Mono',monospace;font-size:13px;font-weight:600;color:var(--white);background:var(--navy);padding:6px 10px;border-radius:6px;flex-shrink:0;margin-top:2px;}
+.prescreen-category{font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;}
+.prescreen-question{font-size:14px;font-weight:600;color:var(--navy);line-height:1.5;}
+.prescreen-score-head{display:flex;gap:8px;align-items:center;flex-shrink:0;margin-top:2px;}
+.prescreen-score-btn{width:32px;height:32px;border-radius:6px;border:1.5px solid var(--border);background:var(--cream);cursor:pointer;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:12px;font-weight:600;color:var(--muted);transition:all .15s;}
+.prescreen-score-btn:hover{border-color:var(--navy);}
+.prescreen-score-btn.selected{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+.prescreen-chev{font-size:20px;color:var(--muted);margin-left:8px;flex-shrink:0;transition:transform .2s;line-height:1;margin-top:2px;}
+.prescreen-card.open .prescreen-chev{transform:rotate(90deg);}
+.prescreen-card-body{display:none;border-top:1px solid var(--border);padding:20px 22px;}
+.prescreen-card.open .prescreen-card-body{display:block;}
+.prescreen-note-area{width:100%;min-height:60px;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--text);background:var(--cream);resize:vertical;outline:none;transition:border-color .15s;}
+.prescreen-note-area:focus{border-color:var(--navy);}
+
 </style>
+
+<!-- ══════════ ONBOARDING VIEW ══════════ -->
+<style>
+/* ── Onboarding layout ── */
+.ob-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:flex-start;}
+@media(max-width:820px){.ob-layout{grid-template-columns:1fr;}}
+
+/* ── Step sidebar ── */
+.ob-sidebar{background:var(--white);border-radius:14px;border:1.5px solid var(--border);overflow:hidden;position:sticky;top:70px;}
+.ob-sidebar-head{background:var(--navy);padding:14px 16px;}
+.ob-sidebar-title{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.08em;}
+.ob-sidebar-name{font-size:14px;font-weight:600;color:#f8f6f1;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ob-step{display:flex;align-items:center;gap:10px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.ob-step:last-child{border-bottom:none;}
+.ob-step.active-step{background:rgba(200,168,75,.10);}
+.ob-step.locked{opacity:.45;cursor:not-allowed;}
+.ob-step-icon{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;font-weight:700;font-family:'DM Mono',monospace;}
+.ob-step-icon.done{background:var(--green-light);color:var(--green);}
+.ob-step-icon.current{background:rgba(200,168,75,.2);color:var(--gold);border:2px solid var(--gold);}
+.ob-step-icon.pending{background:var(--cream);color:var(--muted);border:1.5px solid var(--border);}
+.ob-step-label{font-size:13px;font-weight:600;color:var(--navy);line-height:1.3;}
+.ob-step-sub{font-size:11px;color:var(--muted);margin-top:1px;}
+
+/* ── Main content panels ── */
+.ob-panel{display:none;}
+.ob-panel.ob-active{display:block;}
+.ob-card{background:var(--white);border-radius:14px;border:1.5px solid var(--border);padding:22px 24px;margin-bottom:16px;}
+.ob-card-title{font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;}
+
+/* ── Doc status grid ── */
+.doc-grid{width:100%;border-collapse:collapse;}
+.doc-grid th{background:var(--navy);color:var(--gold);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;text-align:left;}
+.doc-grid td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
+.doc-grid tr:last-child td{border-bottom:none;}
+.doc-grid tr:hover td{background:var(--cream);}
+.doc-status-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;}
+.doc-status-badge.signed{background:var(--green-light);color:var(--green);}
+.doc-status-badge.pending{background:var(--gold-light);color:#7a5c00;}
+.doc-status-badge.missing{background:var(--red-light);color:var(--red);}
+.doc-status-badge.received{background:var(--green-light);color:var(--green);}
+.doc-action-btn{padding:5px 12px;border-radius:7px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--navy);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s;}
+.doc-action-btn:hover{background:var(--cream);border-color:var(--navy);}
+.doc-action-btn.primary{background:var(--navy);color:var(--gold);border-color:var(--navy);}
+.doc-action-btn.primary:hover{background:var(--navy-dark);}
+.doc-action-btn.danger{color:var(--red);border-color:var(--red-light);}
+
+/* ── Sign-off modal ── */
+.ob-modal-overlay{display:none;position:fixed;inset:0;z-index:3000;background:rgba(10,15,30,.78);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px;}
+.ob-modal-overlay.open{display:flex;}
+.ob-modal{background:var(--white);border-radius:18px;padding:32px 34px;max-width:460px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.35);}
+.ob-modal h3{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.ob-modal p{font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.6;}
+.ob-modal-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:11px 14px;font-size:15px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;transition:border-color .15s;margin-bottom:8px;}
+.ob-modal-input:focus{border-color:var(--navy);}
+.ob-modal-meta{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;background:var(--cream);border-radius:8px;padding:8px 12px;margin-bottom:18px;line-height:1.8;}
+.ob-modal-btns{display:flex;gap:10px;}
+.ob-modal-btns button{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ob-modal-confirm{background:var(--navy);color:var(--gold);}
+.ob-modal-cancel{background:var(--cream);color:var(--muted);border:1.5px solid var(--border)!important;}
+
+/* ── Audit trail badge ── */
+.audit-trail{background:var(--gold-pale);border:1.5px solid var(--gold-light);border-radius:10px;padding:13px 16px;font-size:12px;font-family:'DM Mono',monospace;color:#5a4a1a;line-height:2;margin-top:14px;}
+.audit-trail strong{color:var(--navy);}
+
+/* ── Progress bar (finalize) ── */
+.ob-progress-wrap{background:var(--border);border-radius:6px;height:10px;margin:10px 0 5px;}
+.ob-progress-bar{height:10px;border-radius:6px;background:var(--green);transition:width .4s;}
+
+/* ── Step nav buttons ── */
+.ob-step-nav{display:flex;gap:10px;margin-top:6px;}
+</style>
+
+<div id="view-onboarding" class="view">
+  <div class="page-header">
+    <h1>Onboarding</h1>
+    <p>Manage offer documents, collect signatures, verify uploads, and finalize the hire package — all in one place.</p>
+  </div>
+
+  <!-- TOP BAR: candidate entry + import -->
+  <div style="background:var(--navy);border-radius:14px;padding:18px 22px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Candidate</div>
+      <input id="obCandidateName" type="text" placeholder="Full name" oninput="obSyncName()"
+        style="width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 12px;font-size:14px;color:#f8f6f1;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Start Date</div>
+      <input id="obStartDate" type="date"
+        style="width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 12px;font-size:14px;color:#f8f6f1;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <div style="flex:1;min-width:200px;">
+      <div style="font-size:11px;font-weight:600;color:var(--gold);text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;">Role / Position</div>
+      <input id="obRole" type="text" placeholder="e.g. AV Sales Rep"
+        style="width:100%;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:8px;padding:8px 12px;font-size:14px;color:#f8f6f1;font-family:'DM Sans',sans-serif;outline:none;">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button onclick="obImportSession()" style="padding:9px 16px;border-radius:10px;background:var(--gold);color:var(--navy);font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">⬆ Import session</button>
+      <button onclick="obReset()" style="padding:7px 16px;border-radius:10px;background:transparent;color:rgba(248,246,241,.45);font-size:12px;font-weight:600;border:1.5px solid rgba(255,255,255,.18);cursor:pointer;font-family:'DM Sans',sans-serif;">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN LAYOUT -->
+  <div class="ob-layout">
+
+    <!-- LEFT: Step sidebar -->
+    <div class="ob-sidebar">
+      <div class="ob-sidebar-head">
+        <div class="ob-sidebar-title">Hire Pipeline</div>
+        <div class="ob-sidebar-name" id="obSidebarName">No candidate</div>
+      </div>
+      <div class="ob-step active-step" onclick="obGoStep(0)" id="ob-step-0">
+        <div class="ob-step-icon current" id="ob-step-icon-0">1</div>
+        <div><div class="ob-step-label">Review &amp; Sign Offer</div><div class="ob-step-sub">Offer letter + sign-off</div></div>
+      </div>
+      <div class="ob-step locked" onclick="obGoStep(1)" id="ob-step-1">
+        <div class="ob-step-icon pending" id="ob-step-icon-1">2</div>
+        <div><div class="ob-step-label">Legal Disclosures</div><div class="ob-step-sub">Non-Compete &amp; policies</div></div>
+      </div>
+      <div class="ob-step locked" onclick="obGoStep(2)" id="ob-step-2">
+        <div class="ob-step-icon pending" id="ob-step-icon-2">3</div>
+        <div><div class="ob-step-label">Upload Documents</div><div class="ob-step-sub">ID, tax forms, I-9</div></div>
+      </div>
+      <div class="ob-step locked" onclick="obGoStep(3)" id="ob-step-3">
+        <div class="ob-step-icon pending" id="ob-step-icon-3">4</div>
+        <div><div class="ob-step-label">Final Review</div><div class="ob-step-sub">Completeness check</div></div>
+      </div>
+      <div class="ob-step locked" onclick="obGoStep(4)" id="ob-step-4">
+        <div class="ob-step-icon pending" id="ob-step-icon-4">5</div>
+        <div><div class="ob-step-label">Finalize &amp; Archive</div><div class="ob-step-sub">Export hire package</div></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Step panels -->
+    <div>
+
+      <!-- ── STEP 1: Offer Letter ── -->
+      <div class="ob-panel ob-active" id="ob-panel-0">
+        <div class="ob-card">
+          <div class="ob-card-title">Step 1 — Offer Letter</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Review the offer details below, then collect the candidate's typed signature. This creates a timestamped audit record for your files.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;">Base Salary / Rate</label>
+              <input id="obSalary" type="text" placeholder="e.g. $45,000 / year" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;">Commission / Bonus Structure</label>
+              <input id="obCommission" type="text" placeholder="e.g. 8% on closed deals" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;">Reporting Manager</label>
+              <input id="obManager" type="text" placeholder="Manager name" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;">
+            </div>
+            <div>
+              <label style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;">Work Location</label>
+              <input id="obLocation" type="text" placeholder="e.g. Orlando, FL / Remote" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;">
+            </div>
+          </div>
+
+          <div>
+            <label style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px;">Additional Offer Notes</label>
+            <textarea id="obOfferNotes" rows="3" placeholder="Probationary period, benefits start date, equipment provided, etc." style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 11px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--text);background:var(--cream);outline:none;resize:vertical;"></textarea>
+          </div>
+
+          <!-- Signature status -->
+          <div id="ob-offer-unsigned" style="margin-top:16px;">
+            <button onclick="openObSignModal('offer')" class="doc-action-btn primary">✍ Collect Signature</button>
+            <span style="font-size:12px;color:var(--muted);margin-left:10px;">No signature recorded yet</span>
+          </div>
+          <div id="ob-offer-signed" style="display:none;margin-top:14px;">
+            <div class="audit-trail" id="ob-offer-audit"></div>
+            <div class="ob-step-nav">
+              <button onclick="obAdvance(0)" class="doc-action-btn primary">Continue to Step 2 →</button>
+              <button onclick="obPrintOfferLetter()" class="doc-action-btn">🖨 Print Offer Letter</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: Legal Disclosures ── -->
+      <div class="ob-panel" id="ob-panel-1">
+        <div class="ob-card">
+          <div class="ob-card-title">Step 2 — Legal Disclosures</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Candidate reviews and acknowledges each policy. Each item requires a separate sign-off.</p>
+
+          <table class="doc-grid" style="margin-bottom:16px;">
+            <thead><tr><th>Document</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Non-Compete Agreement</strong><div style="font-size:11px;color:var(--muted);">12-month restriction, 50-mile radius</div></td>
+                <td><span style="font-size:11px;color:var(--muted);">System</span></td>
+                <td id="ob-noncompete-status"><span class="doc-status-badge pending">⏳ Pending</span></td>
+                <td><button onclick="openObSignModal('noncompete')" class="doc-action-btn" id="ob-noncompete-btn">Sign</button></td>
+              </tr>
+              <tr>
+                <td><strong>At-Will Employment Acknowledgment</strong><div style="font-size:11px;color:var(--muted);">Confirms employment is at-will</div></td>
+                <td><span style="font-size:11px;color:var(--muted);">System</span></td>
+                <td id="ob-atwill-status"><span class="doc-status-badge pending">⏳ Pending</span></td>
+                <td><button onclick="openObSignModal('atwill')" class="doc-action-btn" id="ob-atwill-btn">Sign</button></td>
+              </tr>
+              <tr>
+                <td><strong>Confidentiality / NDA</strong><div style="font-size:11px;color:var(--muted);">Protects client lists, pricing, and IP</div></td>
+                <td><span style="font-size:11px;color:var(--muted);">System</span></td>
+                <td id="ob-nda-status"><span class="doc-status-badge pending">⏳ Pending</span></td>
+                <td><button onclick="openObSignModal('nda')" class="doc-action-btn" id="ob-nda-btn">Sign</button></td>
+              </tr>
+              <tr>
+                <td><strong>Code of Conduct</strong><div style="font-size:11px;color:var(--muted);">Attendance, communication, CRM usage</div></td>
+                <td><span style="font-size:11px;color:var(--muted);">System</span></td>
+                <td id="ob-conduct-status"><span class="doc-status-badge pending">⏳ Pending</span></td>
+                <td><button onclick="openObSignModal('conduct')" class="doc-action-btn" id="ob-conduct-btn">Sign</button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div id="ob-legal-incomplete" style="font-size:12px;color:var(--muted);">All four documents must be signed to continue.</div>
+          <div id="ob-legal-complete" style="display:none;">
+            <div class="ob-step-nav">
+              <button onclick="obAdvance(1)" class="doc-action-btn primary">Continue to Step 3 →</button>
+              <button onclick="obPrintLegalPackage()" class="doc-action-btn">🖨 Print Legal Package</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: Document Uploads ── -->
+      <div class="ob-panel" id="ob-panel-2">
+        <div class="ob-card">
+          <div class="ob-card-title">Step 3 — Upload Documents</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Candidate supplies required verification documents. Images (JPG, PNG) are automatically converted to PDF before packaging.</p>
+
+          <table class="doc-grid" style="margin-bottom:16px;">
+            <thead><tr><th>Document</th><th>Source</th><th>Status</th><th>Action</th></tr></thead>
+            <tbody id="ob-upload-rows">
+              <!-- rendered by JS -->
+            </tbody>
+          </table>
+
+          <div id="ob-uploads-incomplete" style="font-size:12px;color:var(--muted);">Required documents must be uploaded to continue.</div>
+          <div id="ob-uploads-complete" style="display:none;">
+            <div class="ob-step-nav">
+              <button onclick="obAdvance(2)" class="doc-action-btn primary">Continue to Step 4 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: Final Review ── -->
+      <div class="ob-panel" id="ob-panel-3">
+        <div class="ob-card">
+          <div class="ob-card-title">Step 4 — Final Review</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Complete checklist before marking this hire as active. Every item below must be confirmed.</p>
+
+          <div id="ob-review-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:18px;">
+            <!-- rendered by JS -->
+          </div>
+
+          <div id="ob-review-incomplete" style="font-size:12px;color:var(--muted);">Check off all items to proceed.</div>
+          <div id="ob-review-complete" style="display:none;">
+            <div class="ob-step-nav">
+              <button onclick="obAdvance(3)" class="doc-action-btn primary">Mark Ready — Proceed to Archive →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 5: Finalize & Archive ── -->
+      <div class="ob-panel" id="ob-panel-4">
+        <div class="ob-card">
+          <div class="ob-card-title">Step 5 — Finalize &amp; Archive</div>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.6;">All steps complete. Export the full onboarding package — signatures, uploaded documents, and a summary PDF — as a single zip file. Candidate is then flagged as <strong>Active</strong>.</p>
+
+          <!-- Completeness summary -->
+          <div style="background:var(--cream);border-radius:10px;padding:16px 18px;margin-bottom:18px;">
+            <div style="font-size:11px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;">Package Contents</div>
+            <div id="ob-package-list" style="font-size:13px;color:#444;line-height:2.2;"></div>
+          </div>
+
+          <div class="ob-progress-wrap"><div class="ob-progress-bar" id="ob-final-bar" style="width:0%"></div></div>
+          <div style="font-size:11px;color:var(--muted);margin-bottom:18px;" id="ob-final-bar-label">Ready to export</div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button onclick="obPrintFullPackage()" class="doc-action-btn primary">🖨 Print Full Hire Package</button>
+            <button onclick="obExportSummaryPdf()" class="doc-action-btn">📄 Summary PDF Only</button>
+            <button onclick="obExportZip()" style="padding:9px 20px;border-radius:10px;background:var(--green);color:#fff;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;">📦 Finalize &amp; Download Zip</button>
+          </div>
+
+          <div id="ob-finalized-badge" style="display:none;margin-top:18px;background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;padding:14px 18px;font-size:13px;color:var(--green);font-weight:600;">
+            ✓ Hire package exported &amp; candidate marked Active. File is saved.
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end right col -->
+  </div><!-- end ob-layout -->
+</div>
+<!-- end view-onboarding -->
+
+<!-- ── Sign-off Modal ── -->
+<div class="ob-modal-overlay" id="obSignModal">
+  <div class="ob-modal">
+    <h3 id="obSignModalTitle">Sign Document</h3>
+    <p id="obSignModalDesc">Type your full legal name below to acknowledge and sign this document. This creates a timestamped audit record.</p>
+    <input class="ob-modal-input" id="obSignName" type="text" placeholder="Full legal name" autocomplete="off">
+    <div class="ob-modal-meta" id="obSignMeta"></div>
+    <div class="ob-modal-btns">
+      <button class="ob-modal-cancel" onclick="closeObSignModal()">Cancel</button>
+      <button class="ob-modal-confirm" onclick="confirmObSign()">✍ Confirm Signature</button>
+    </div>
+  </div>
+</div>
 
 <!-- ══════════ VIDEO MANAGER VIEW ══════════ -->
 <div id="view-videos" class="view">
@@ -875,7 +1635,9 @@ body.dark .email-pre{background:#151820;}
 </div>
 
 <!-- FOOTER -->
-<div class="app-footer">TRS New Hire Training System &nbsp;·&nbsp; v15&nbsp; Last updated April 2026 &nbsp;·<span id="footerUser"></span></div>
+<div class="app-footer">
+  TRS New Hire Training System &nbsp;·&nbsp; v17 &nbsp;·&nbsp; Last updated April 2026 &nbsp;·&nbsp; <span id="footerUser"></span>
+</div>
 
 <script>
 const videoRegistry = [
@@ -1825,6 +2587,47 @@ renderTasks();
 buildEmails();
 buildPlaybook();
 buildCal();
+// ══════ PRE-SCREEN VALIDATION QUESTIONS ══════
+// Scored 0-6 per question (lower is better). 5 questions = max 30 points.
+// 20+ = pass to Phase 1, <20 = no-go
+const prescreenQuestions = [
+  {
+    num:'1', category:'Availability',
+    text:'Our reps work 8:30 AM to 5:00 PM, Monday through Friday, with occasional evening calls 2-3x per month. Can you commit to that schedule?',
+    why:'Not negotiable. Late arrivals and early departures kill team momentum.',
+    scoring:'0=enthusiastic yes | 3=yes but hesitant | 6=has conflicts or unclear',
+    flags:['Mentions needing flexibility during core hours','Can\'t commit to occasional evenings','Vague about schedule']
+  },
+  {
+    num:'2', category:'Call Volume Mindset',
+    text:'You\'ll start Day 1 making phone calls — not following leads, making calls. Does the idea of 30+ outbound calls a day excite you, make you nervous, or is it somewhere in between?',
+    why:'Phone volume isn\'t optional. We need reps who lean in to it, not resist it.',
+    scoring:'0=excited/energized | 3=nervous but willing | 6=visibly uncomfortable or deflecting',
+    flags:['Says they prefer email','Asks if there\'s a way to avoid calls','Shows anxiety without willingness to try']
+  },
+  {
+    num:'3', category:'Rejection Tolerance',
+    text:'On a typical day, you\'ll hear "No" or "Not interested" about 25 times. How have you handled rejection in past work, and what\'s your gut feeling about that volume?',
+    why:'Rejection is the job. Reps who can\'t bounce back from it don\'t make it past Week 1.',
+    scoring:'0=laughs it off, has examples | 3=acknowledges it but unsure | 6=shows frustration or zero examples',
+    flags:['Gets quiet or defensive','Only talks about wins, not losses','Implies they won\'t get rejected much']
+  },
+  {
+    num:'4', category:'Sales Mindset',
+    text:'Tell me about a time you convinced someone to buy something, say yes to something, or do something they weren\'t initially interested in. What was it?',
+    why:'We need evidence they can move a deal. Event planners often manage vendors but don\'t usually sell TO them.',
+    scoring:'0=strong sales example | 3=weak example or vague | 6=no example or "people just liked me"',
+    flags:['Only talks about their job logistics','No evidence of persuasion','Attributes success to luck or charm']
+  },
+  {
+    num:'5', category:'Coachability',
+    text:'Describe a time someone gave you critical feedback or told you that you\'d done something wrong. How did you respond?',
+    why:'We coach hard in Week 1. Reps who get defensive or ignore feedback waste everyone\'s time.',
+    scoring:'0=accepted it, learned from it | 3=took it but defensive | 6=got offended or avoided change',
+    flags:['Blames others','Defensive tone','Says they rarely get feedback']
+  }
+];
+
 // ══════ INTERVIEW QUESTIONS ══════
 const iqSections = [
   {
@@ -1967,57 +2770,386 @@ const starExamples = [
   }
 ];
 
-function buildInterview() {
-  // Build question sections
-  const wrap = document.getElementById('interviewSections');
-  iqSections.forEach((sec, si) => {
+// ══════ PRE-SCREEN LOGIC ══════
+const prescreenScores = {};
+
+function buildPrescreen() {
+  const wrap = document.getElementById('prescreenSections');
+  let cardIndex = 0;
+  
+  prescreenQuestions.forEach((q, qi) => {
+    const cardId = 'psCard-' + cardIndex;
+    const noteId = 'psNote-' + cardIndex;
+    prescreenScores[cardIndex] = 0;
+    cardIndex++;
+    
     const d = document.createElement('div');
-    d.className = 'iq-section';
-    d.id = 'iqs-'+si;
-    let qHtml = '';
-    sec.questions.forEach((q, qi) => {
-      qHtml += `<div class="q-block">
-        <div class="q-num">${q.num}${q.star?' · STAR question':' · Direct question'}</div>
-        <div class="q-text">${q.text}</div>
-        <div class="q-why">Why ask this: ${q.why}</div>
-        <div class="q-probes">
-          <div class="q-probes-title">Probe with these follow-ups</div>
-          ${q.probes.map(p=>`<div class="q-probe">${p}</div>`).join('')}
-        </div>
-        <div class="listen-box" style="margin-top:10px;">
-          <div class="listen-title">Listen for</div>
-          ${q.good.map(g=>`<div class="listen-item good">${g}</div>`).join('')}
-          ${q.bad.map(b=>`<div class="listen-item bad">${b}</div>`).join('')}
-        </div>
-      </div>`;
-    });
+    d.className = 'prescreen-card';
+    d.id = cardId;
+    
     d.innerHTML = `
-      <div class="iq-head" onclick="this.closest('.iq-section').classList.toggle('open');this.querySelector('.iq-chev').style.transform=this.closest('.iq-section').classList.contains('open')?'rotate(180deg)':''">
-        <div class="iq-icon ${sec.iconCls}">${sec.icon}</div>
-        <div class="iq-hinfo"><div class="iq-title">${sec.title}</div><div class="iq-sub">${sec.sub}</div></div>
-        <div class="iq-chev">▾</div>
+      <div class="prescreen-card-head" onclick="togglePrescreenCard('${cardId}')">
+        <div class="prescreen-num">${q.num}</div>
+        <div style="flex:1;">
+          <div class="prescreen-category">${q.category}</div>
+          <div class="prescreen-question">${q.text}</div>
+        </div>
+        <div class="prescreen-score-head" onclick="event.stopPropagation()">
+          ${[0,3,6].map(n=>`<button class="prescreen-score-btn" onclick="setPrescreenScore('${cardId}',${n})" data-val="${n}">
+            ${n === 0 ? '✓' : n === 3 ? '~' : '✗'}
+          </button>`).join('')}
+        </div>
+        <div class="prescreen-chev">›</div>
       </div>
-      <div class="iq-body">${qHtml}</div>
+      <div class="prescreen-card-body">
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Why this matters</div>
+          <div style="font-size:13px;color:#555;line-height:1.6;">${q.why}</div>
+        </div>
+        
+        <div style="margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Scoring</div>
+          <div style="font-size:13px;color:#555;line-height:1.6;">${q.scoring}</div>
+        </div>
+        
+        <div style="background:var(--red-light);border-radius:10px;padding:12px 14px;margin-bottom:12px;">
+          <div style="font-size:11px;font-weight:700;color:#4a1010;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">⚠️ Red flags in their answer</div>
+          ${q.flags.map(f=>`<div style="font-size:12px;color:#4a1010;line-height:1.6;">• ${f}</div>`).join('')}
+        </div>
+        
+        <div>
+          <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Your notes</div>
+          <textarea class="prescreen-note-area" id="${noteId}" placeholder="What did they say? Why did you score them this way?"></textarea>
+        </div>
+      </div>
     `;
     wrap.appendChild(d);
   });
+}
 
-  // Build scorecard
-  const scWrap = document.getElementById('scorecardRows');
-  scorecardItems.forEach(item => {
-    const row = document.createElement('div');
-    row.className = 'sc-row';
-    row.innerHTML = `
-      <div class="sc-label">${item.label}<br><span class="sc-sub">${item.sub}</span></div>
-      <div class="sc-stars" id="stars-${item.id}">
-        ${[1,2,3,4,5].map(n=>`<div class="sc-star" onclick="setStar('${item.id}',${n})" data-val="${n}">★</div>`).join('')}
+function togglePrescreenCard(cardId) {
+  const card = document.getElementById(cardId);
+  card.classList.toggle('open');
+}
+
+function setPrescreenScore(cardId, val) {
+  const card = document.getElementById(cardId);
+  const qNum = card.id.replace('psCard-','');
+  prescreenScores[qNum] = val;
+  
+  // Update button states
+  const buttons = card.querySelectorAll('.prescreen-score-btn');
+  buttons.forEach(btn => {
+    const bv = parseInt(btn.dataset.val);
+    btn.classList.toggle('selected', bv === val);
+  });
+  
+  updatePrescreenTotal();
+}
+
+function updatePrescreenTotal() {
+  const total = Object.values(prescreenScores).reduce((a,b)=>a+b,0);
+  const el = document.getElementById('prescreenTotal');
+  el.textContent = total + ' / 30';
+  el.style.color = total < 20 ? 'var(--red)' : total < 25 ? 'var(--gold)' : 'var(--green)';
+}
+
+function setPrescreenDecision(d) {
+  ['pass','nopass','maybe'].forEach(k => {
+    const el = document.getElementById('pdec-'+k);
+    el.style.background = 'var(--white)';
+    el.style.color = 'var(--muted)';
+    el.style.borderColor = 'var(--border)';
+  });
+  const colors = { 
+    pass:['var(--green-light)','var(--green)','#a8d5bf'], 
+    nopass:['var(--red-light)','var(--red)','#e5b5b5'], 
+    maybe:['var(--gold-pale)','#7a5c00','var(--gold)'] 
+  };
+  const [bg,color,border] = colors[d];
+  const el = document.getElementById('pdec-'+d);
+  el.style.background = bg;
+  el.style.color = color;
+  el.style.borderColor = border;
+}
+
+function exportPrescreenPdf() {
+  const total = Object.values(prescreenScores).reduce((a,b)=>a+b,0);
+  const candidateName = document.getElementById('prescreenCandidateName').value || 'Unknown Candidate';
+  const notes = document.getElementById('prescreenNotes').value;
+
+  const decisionLabel = total < 20 ? '✗ No-Go — Do Not Advance' :
+                        total < 25 ? '↗ Maybe — Marginal, Deeper Assessment Needed' :
+                                     '✓ Pass — Advance to Phase 1 Interview';
+  const decisionColor = total < 20 ? '#8b2020' : total < 25 ? '#7a5c00' : '#1d6b4a';
+  const decisionBg    = total < 20 ? '#f5dada'  : total < 25 ? '#fdf6e0'  : '#d4ede3';
+
+  // Scoring guide parsed from q.scoring string (format: "0=label | 3=label | 6=label")
+  function parseScoringGuide(scoringStr) {
+    return scoringStr.split('|').map(s => s.trim()).map(part => {
+      const [score, ...rest] = part.split('=');
+      return `<span class="score-chip score-${score.trim()}">${score.trim()} pts</span> ${rest.join('=').trim()}`;
+    }).join('&nbsp;&nbsp;');
+  }
+
+  let questionBlocks = '';
+  prescreenQuestions.forEach((q, qi) => {
+    const score = prescreenScores[qi] || 0;
+    const noteEl = document.getElementById('psNote-' + qi);
+    const noteText = noteEl ? noteEl.value.trim() : '';
+    const scoreText = score === 0 ? 'Strong ✓' : score === 3 ? 'Uncertain ~' : 'Weak ✗';
+    const scoreBg   = score === 0 ? '#d4ede3'  : score === 3 ? '#fdf6e0'   : '#f5dada';
+    const scoreClr  = score === 0 ? '#1d6b4a'  : score === 3 ? '#7a5c00'   : '#8b2020';
+
+    const flagsList = (q.flags || []).map(f => `<li>${f}</li>`).join('');
+
+    questionBlocks += `
+    <div class="q-block">
+      <div class="q-header">
+        <div class="q-left">
+          <span class="q-num">${q.num}</span>
+          <div>
+            <div class="q-category">${q.category}</div>
+            <div class="q-text">"${q.text}"</div>
+          </div>
+        </div>
+        <div class="q-score-badge" style="background:${scoreBg};color:${scoreClr};">
+          <div class="q-score-num">${score}/6</div>
+          <div class="q-score-label">${scoreText}</div>
+        </div>
       </div>
-      <div class="sc-score" id="score-${item.id}">0</div>
-    `;
-    scWrap.appendChild(row);
+
+      <div class="q-why"><span class="pill pill-why">Why we ask this</span> ${q.why}</div>
+
+      <div class="q-scoring-row"><span class="pill pill-scoring">Scoring guide</span> ${parseScoringGuide(q.scoring)}</div>
+
+      ${flagsList ? `<div class="q-flags"><span class="pill pill-flags">Red flags</span><ul class="flag-list">${flagsList}</ul></div>` : ''}
+
+      <div class="q-notes-row">
+        <span class="pill pill-notes">Interviewer notes</span>
+        <div class="q-notes-box">${noteText || '<span style="color:#aaa;font-style:italic;">No notes recorded</span>'}</div>
+      </div>
+    </div>`;
   });
 
-  // Build STAR examples
+  const scorePercent = Math.round((total / 30) * 100);
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>TRS Pre-Screen — ${candidateName}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;padding:36px 44px;max-width:760px;margin:0 auto;color:#1a1a1a;font-size:13px;line-height:1.6;}
+
+    /* ── Header ── */
+    .report-header{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #c8a84b;padding-bottom:14px;margin-bottom:20px;}
+    .report-title{font-size:22px;font-weight:700;color:#1a3a5c;letter-spacing:-.3px;}
+    .report-sub{font-size:12px;color:#888;margin-top:3px;}
+    .report-logo{font-family:monospace;font-size:14px;font-weight:700;background:#1a3a5c;color:#c8a84b;padding:6px 12px;border-radius:6px;}
+
+    /* ── Summary card ── */
+    .summary-card{display:flex;gap:16px;background:#f5f2eb;border-radius:10px;padding:18px 20px;margin-bottom:24px;align-items:center;}
+    .summary-score-block{text-align:center;flex-shrink:0;}
+    .summary-score-num{font-size:42px;font-weight:700;color:#1a3a5c;line-height:1;font-family:monospace;}
+    .summary-score-denom{font-size:14px;color:#888;margin-top:2px;}
+    .summary-divider{width:1px;background:#ddd;align-self:stretch;flex-shrink:0;}
+    .summary-detail{flex:1;}
+    .summary-decision{font-size:16px;font-weight:700;padding:8px 14px;border-radius:8px;display:inline-block;margin-bottom:10px;}
+    .summary-bar-wrap{background:#ddd;border-radius:4px;height:8px;width:100%;margin-bottom:6px;}
+    .summary-bar{height:8px;border-radius:4px;background:#1a3a5c;}
+    .summary-bar-label{font-size:11px;color:#888;}
+    .summary-meta{font-size:12px;color:#666;margin-top:10px;}
+
+    /* ── Section heading ── */
+    .section-heading{font-size:10px;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.1em;margin:24px 0 10px;border-bottom:1px solid #e0dbd0;padding-bottom:6px;}
+
+    /* ── Question block ── */
+    .q-block{border:1px solid #e0dbd0;border-radius:10px;margin-bottom:16px;overflow:hidden;page-break-inside:avoid;}
+    .q-header{display:flex;justify-content:space-between;align-items:flex-start;background:#fafaf8;padding:14px 16px;gap:12px;border-bottom:1px solid #ece8e0;}
+    .q-left{display:flex;align-items:flex-start;gap:12px;flex:1;}
+    .q-num{background:#1a3a5c;color:#c8a84b;font-family:monospace;font-weight:700;font-size:13px;padding:4px 9px;border-radius:5px;flex-shrink:0;margin-top:1px;}
+    .q-category{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px;}
+    .q-text{font-size:13px;font-weight:600;color:#1a3a5c;line-height:1.5;font-style:italic;}
+    .q-score-badge{text-align:center;padding:8px 12px;border-radius:8px;flex-shrink:0;min-width:72px;}
+    .q-score-num{font-size:18px;font-weight:700;font-family:monospace;line-height:1;}
+    .q-score-label{font-size:10px;font-weight:600;margin-top:2px;}
+
+    /* ── Context rows ── */
+    .q-why,.q-scoring-row,.q-flags,.q-notes-row{padding:10px 16px;border-bottom:1px solid #f0ece4;font-size:12px;display:flex;gap:10px;align-items:flex-start;}
+    .q-notes-row{border-bottom:none;}
+    .q-flags{flex-direction:column;gap:6px;}
+    .flag-list{list-style:disc;padding-left:18px;margin-top:4px;color:#8b2020;}
+    .flag-list li{font-size:12px;margin-bottom:2px;}
+
+    /* ── Pills ── */
+    .pill{display:inline-block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;padding:2px 7px;border-radius:20px;flex-shrink:0;margin-top:1px;}
+    .pill-why{background:#e8f0fb;color:#2a5298;}
+    .pill-scoring{background:#eef8f2;color:#1d6b4a;}
+    .pill-flags{background:#fbe8e8;color:#8b2020;}
+    .pill-notes{background:#f0ece4;color:#5a4a2a;}
+
+    /* ── Scoring chips ── */
+    .score-chip{font-family:monospace;font-size:11px;font-weight:700;padding:1px 6px;border-radius:4px;display:inline-block;}
+    .score-0{background:#d4ede3;color:#1d6b4a;}
+    .score-3{background:#fdf6e0;color:#7a5c00;}
+    .score-6{background:#f5dada;color:#8b2020;}
+
+    /* ── Notes box ── */
+    .q-notes-box{flex:1;background:#fffdf8;border:1px dashed #d0cab8;border-radius:6px;padding:8px 11px;font-size:12px;line-height:1.65;white-space:pre-wrap;min-height:36px;}
+
+    /* ── Summary notes ── */
+    .overall-notes-box{background:#f5f2eb;padding:14px 16px;border-radius:8px;font-size:13px;line-height:1.75;white-space:pre-wrap;border:1px solid #e0dbd0;}
+
+    /* ── Print ── */
+    @media print{
+      body{padding:20px 28px;}
+      button.print-btn{display:none;}
+      .q-block{page-break-inside:avoid;}
+    }
+  </style>
+  </head><body>
+
+  <div class="report-header">
+    <div>
+      <div class="report-title">Pre-Screen Interview Report</div>
+      <div class="report-sub">TRS — AV Sales Rep Candidate Evaluation</div>
+    </div>
+    <div class="report-logo">TRS</div>
+  </div>
+
+  <div class="summary-card">
+    <div class="summary-score-block">
+      <div class="summary-score-num">${total}</div>
+      <div class="summary-score-denom">out of 30</div>
+    </div>
+    <div class="summary-divider"></div>
+    <div class="summary-detail">
+      <div class="summary-decision" style="background:${decisionBg};color:${decisionColor};">${decisionLabel}</div>
+      <div class="summary-bar-wrap"><div class="summary-bar" style="width:${scorePercent}%;background:${decisionColor};"></div></div>
+      <div class="summary-bar-label">${scorePercent}% of maximum score &nbsp;·&nbsp; Lower score = stronger candidate (0 = best per question)</div>
+      <div class="summary-meta">Candidate: <strong>${candidateName}</strong> &nbsp;·&nbsp; Date: ${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}</div>
+    </div>
+  </div>
+
+  <div class="section-heading">Validation Questions — Detail &amp; Interviewer Notes</div>
+  <p style="font-size:11px;color:#888;margin-bottom:14px;">Each question below shows the scoring rationale, what a strong vs. weak answer looks like, red flags to watch for, and the interviewer's recorded notes.</p>
+
+  ${questionBlocks}
+
+  <div class="section-heading">Overall Key Concerns &amp; Notes</div>
+  <div class="overall-notes-box">${notes || '(none recorded)'}</div>
+
+  <br>
+  <button class="print-btn" onclick="window.print()" style="padding:9px 18px;background:#1a3a5c;color:#c8a84b;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;">🖨 Print / Save as PDF</button>
+
+  </body></html>`);
+  win.document.close();
+  win.focus();
+}
+
+function exportPrescreenTxt() {
+  const total = Object.values(prescreenScores).reduce((a,b)=>a+b,0);
+  const candidateName = document.getElementById('prescreenCandidateName').value || 'Unknown Candidate';
+  const notes = document.getElementById('prescreenNotes').value;
+  
+  let questionsData = '';
+  prescreenQuestions.forEach((q, qi) => {
+    const score = prescreenScores[qi] || 0;
+    const noteEl = document.getElementById('psNote-' + qi);
+    const noteText = noteEl ? noteEl.value.trim() : '';
+    const scoreText = score === 0 ? 'Strong' : score === 3 ? 'Uncertain' : 'Weak';
+    questionsData += `\n  ${q.num}. ${q.category}: ${scoreText} (${score}/6)\n    Notes: ${noteText || '(none)'}\n`;
+  });
+  
+  const decision = total < 20 ? '✗ No-Go (do not advance)' : 
+                   total < 25 ? '↗ Maybe (marginal, deeper assessment needed)' : 
+                                '✓ Pass to Phase 1 (advance to full interview)';
+  
+  const text = `TRS PRE-SCREEN INTERVIEW
+${'='.repeat(42)}
+Candidate: ${candidateName}
+Date: ${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}
+
+PRE-SCREEN SCORE: ${total} / 30
+${decision}
+
+VALIDATION QUESTIONS:${questionsData}
+
+KEY CONCERNS / NOTES:
+${notes || '(none)'}`;
+
+  const blob = new Blob([text], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `TRS-PreScreen-${candidateName.replace(/\s+/g,'-')}-${new Date().toISOString().split('T')[0]}.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// ══════ INTERVIEW LOGIC ══════
+function buildInterview() {
+  // Build STAR question cards (similar to Phase 2 card structure)
+  const wrap = document.getElementById('interviewSections');
+  let cardIndex = 0;
+  
+  iqSections.forEach((sec, si) => {
+    sec.questions.forEach((q, qi) => {
+      const cardId = 'starCard-' + cardIndex;
+      const ratingId = 'starRating-' + cardIndex;
+      const noteId = 'starNote-' + cardIndex;
+      cardIndex++;
+      
+      const d = document.createElement('div');
+      d.className = 'star-card';
+      d.id = cardId;
+      
+      d.innerHTML = `
+        <div class="star-card-head" onclick="toggleStarCard('${cardId}')">
+          <div class="star-qnum">${q.num}</div>
+          <div style="flex:1;">
+            <div class="star-category">${sec.title}</div>
+            <div class="star-question">"${q.text}"</div>
+          </div>
+          <div class="star-rating-head" id="${ratingId}" onclick="event.stopPropagation()">
+            ${[1,2,3,4,5].map(n=>`<div class="star-dot" onclick="setStarRating('${cardId}',${n})" data-val="${n}" style="opacity:.3;cursor:pointer;font-size:16px;color:var(--gold);transition:opacity .15s;">★</div>`).join('')}
+          </div>
+          <div class="star-chev">›</div>
+        </div>
+        <div class="star-card-body">
+          <div style="margin-bottom:12px;">
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Why ask this</div>
+            <div style="font-size:13px;color:#555;line-height:1.6;">${q.why}</div>
+          </div>
+          
+          <div style="margin-bottom:12px;">
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Probe with these follow-ups</div>
+            <div style="display:grid;gap:6px;">
+              ${q.probes.map(p=>`<div style="font-size:13px;color:#555;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--gold);">→</span>${p}</div>`).join('')}
+            </div>
+          </div>
+          
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+            <div style="background:var(--green-light);border-radius:10px;padding:12px 14px;">
+              <div style="font-size:11px;font-weight:700;color:#1a3a28;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">✓ Green signals</div>
+              ${q.good.map(g=>`<div style="font-size:12px;color:#1a3a28;line-height:1.6;">${g}</div>`).join('<div style="margin-top:4px;"></div>')}
+            </div>
+            <div style="background:var(--red-light);border-radius:10px;padding:12px 14px;">
+              <div style="font-size:11px;font-weight:700;color:#4a1010;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">✗ Red signals</div>
+              ${q.bad.map(b=>`<div style="font-size:12px;color:#4a1010;line-height:1.6;">${b}</div>`).join('<div style="margin-top:4px;"></div>')}
+            </div>
+          </div>
+          
+          <div>
+            <div style="font-size:11px;font-weight:600;color:var(--navy);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px;">Your notes on their answer</div>
+            <textarea class="star-note-area" id="${noteId}" placeholder="What did they say? Score 1–5 based on how well they matched green signals..."></textarea>
+          </div>
+        </div>
+      `;
+      wrap.appendChild(d);
+    });
+  });
+
+  // Build STAR examples (reference)
   const exWrap = document.getElementById('starExamples');
   starExamples.forEach((ex, i) => {
     const d = document.createElement('div');
@@ -2039,27 +3171,38 @@ function buildInterview() {
   });
 }
 
-// ══════ SCORECARD LOGIC ══════
+// ══════ SCORECARD LOGIC (NEW CARD-BASED) ══════
 const starValues = {};
-scorecardItems.forEach(item => { starValues[item.id] = 0; });
+const starNotes = {};
 
-function setStar(id, val) {
-  // Toggle off if same value clicked
-  if (starValues[id] === val) val = 0;
-  starValues[id] = val;
-  const stars = document.querySelectorAll(`#stars-${id} .sc-star`);
-  stars.forEach(s => {
-    const sv = parseInt(s.dataset.val);
-    s.classList.toggle('lit', sv <= val);
-  });
-  document.getElementById('score-'+id).textContent = val;
-  updateTotal();
+function toggleStarCard(cardId) {
+  const card = document.getElementById(cardId);
+  card.classList.toggle('open');
 }
 
-function updateTotal() {
+function setStarRating(cardId, val) {
+  const card = document.getElementById(cardId);
+  const qNum = card.id.replace('starCard-','');
+  
+  // Toggle off if same value clicked
+  if (starValues[qNum] === val) val = 0;
+  starValues[qNum] = val;
+  
+  // Update star dots
+  const dots = card.querySelectorAll('.star-dot');
+  dots.forEach(dot => {
+    const dv = parseInt(dot.dataset.val);
+    dot.classList.toggle('active', dv <= val);
+    dot.style.opacity = dv <= val ? '1' : '.3';
+  });
+  
+  updateStarTotal();
+}
+
+function updateStarTotal() {
   const total = Object.values(starValues).reduce((a,b)=>a+b,0);
-  document.getElementById('scorecardTotal').textContent = total + ' / 50';
   const el = document.getElementById('scorecardTotal');
+  el.textContent = total + ' / 50';
   el.style.color = total >= 40 ? 'var(--green)' : total >= 30 ? 'var(--gold)' : 'var(--red)';
 }
 
@@ -2083,28 +3226,41 @@ function exportTxt() {
   const total = Object.values(starValues).reduce((a,b)=>a+b,0);
   const candidateName = document.getElementById('candidateName').value || 'Unknown Candidate';
   const notes = document.getElementById('interviewNotes').value;
-  const rows = scorecardItems.map(item => `  ${item.label}: ${starValues[item.id]}/5`).join('\n');
-  const decisionEl = document.querySelector('[id^="dec-"][style*="background:var(--green"]') ||
-                     document.querySelector('[id^="dec-"][style*="background: var(--green"]');
+  
+  // Collect all question ratings and notes
+  let questionsData = '';
+  let qIndex = 0;
+  iqSections.forEach((sec, si) => {
+    sec.questions.forEach((q, qi) => {
+      const rating = starValues[qIndex] || 0;
+      const noteEl = document.getElementById('starNote-' + qIndex);
+      const noteText = noteEl ? noteEl.value.trim() : '';
+      questionsData += `\n  ${q.num} (${sec.title}): ${rating}/5\n    Notes: ${noteText || '(no notes)'}\n`;
+      qIndex++;
+    });
+  });
+  
   const decision = total >= 40 ? '✓ Strong hire' : total >= 30 ? '↗ Train up — potential' : '✗ Pass';
   const text = `TRS SALES REP INTERVIEW SCORECARD
 ${'='.repeat(42)}
 Candidate: ${candidateName}
 Date: ${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}
 
-SCORES:
-${rows}
-
-TOTAL: ${total} / 50
+INTERVIEW SCORE: ${total} / 50
 ${decision}
 
-NOTES:
+QUESTION RATINGS:${questionsData}
+
+OVERALL NOTES:
 ${notes || '(none)'}`;
-  const blob = new Blob([text], {type:'text/plain'});
+
+  const blob = new Blob([text], {type: 'text/plain'});
+  const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `TRS-Scorecard-${candidateName.replace(/\s+/g,'-')}.txt`;
+  a.href = url;
+  a.download = `TRS-Interview-${candidateName.replace(/\s+/g,'-')}-${new Date().toISOString().split('T')[0]}.txt`;
   a.click();
+  URL.revokeObjectURL(url);
 }
 
 function exportPdf() {
@@ -2114,10 +3270,27 @@ function exportPdf() {
   const decision = total >= 40 ? '<span style="color:#1d6b4a;font-weight:700;">✓ Strong hire</span>' :
                    total >= 30 ? '<span style="color:#7a5c00;font-weight:700;">↗ Train up — potential</span>' :
                                  '<span style="color:#8b2020;font-weight:700;">✗ Pass</span>';
+  
+  // Collect question data
+  let questionRows = '';
+  let qIndex = 0;
+  iqSections.forEach((sec, si) => {
+    sec.questions.forEach((q, qi) => {
+      const rating = starValues[qIndex] || 0;
+      const noteEl = document.getElementById('starNote-' + qIndex);
+      const noteText = noteEl ? noteEl.value.trim() : '';
+      questionRows += `<tr><td><strong>${q.num} — ${sec.title}</strong></td><td>"${q.text}"</td><td style="text-align:right;font-weight:600;">${rating} / 5</td></tr>`;
+      if (noteText) {
+        questionRows += `<tr><td colspan="3" style="padding:8px 10px;background:#f9f8f5;font-size:12px;color:#666;"><strong>Notes:</strong> ${noteText}</td></tr>`;
+      }
+      qIndex++;
+    });
+  });
+  
   const win = window.open('', '_blank');
   win.document.write(`<!DOCTYPE html><html><head><title>TRS Interview Scorecard — ${candidateName}</title>
   <style>
-    body{font-family:Arial,sans-serif;padding:32px 40px;max-width:700px;margin:0 auto;color:#1a1a1a;}
+    body{font-family:Arial,sans-serif;padding:32px 40px;max-width:800px;margin:0 auto;color:#1a1a1a;}
     h1{font-size:20px;color:#1a3a5c;border-bottom:2px solid #c8a84b;padding-bottom:8px;margin-bottom:4px;}
     .meta{font-size:12px;color:#666;margin-bottom:20px;}
     table{width:100%;border-collapse:collapse;margin:12px 0;}
@@ -2130,16 +3303,18 @@ function exportPdf() {
   </style></head><body>
   <h1>TRS Sales Rep — Interview Scorecard</h1>
   <div class="meta">Candidate: <strong>${candidateName}</strong> &nbsp;·&nbsp; Date: ${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}</div>
+  <h2>Interview Score & Decision</h2>
+  <div style="font-size:32px;font-weight:700;color:#1a3a5c;margin-bottom:8px;">${total} / 50</div>
+  <div style="font-size:14px;margin-bottom:16px;">${decision}</div>
+  <h2>Question Ratings & Notes</h2>
   <table>
-    <tr><th>Category</th><th>Detail</th><th style="text-align:right;">Score</th></tr>
-    ${scorecardItems.map(item => `<tr><td><strong>${item.label}</strong></td><td style="color:#666;">${item.sub}</td><td style="text-align:right;font-weight:600;">${starValues[item.id]} / 5</td></tr>`).join('')}
-    <tr class="total-row"><td colspan="2">Total</td><td style="text-align:right;">${total} / 50</td></tr>
+    <tr><th>Question</th><th>Ask</th><th style="text-align:right;">Rating</th></tr>
+    ${questionRows}
+    <tr class="total-row"><td colspan="2">Total Interview Score</td><td style="text-align:right;">${total} / 50</td></tr>
   </table>
-  <h2>Decision</h2>
-  <p style="font-size:15px;">${decision}</p>
-  <h2>Interview Notes</h2>
-  <div class="notes-box">${notes || '(none)'}</div>
-  <br><button onclick="window.print()">🖨 Print / Save as PDF</button>
+  <h2>Overall Interview Notes</h2>
+  <div class="notes-box">${notes || '(no notes recorded)'}</div>
+  <button onclick="window.print()" style="margin-top:20px;padding:8px 16px;background:#1a3a5c;color:#c8a84b;border:none;border-radius:6px;cursor:pointer;font-weight:600;">🖨 Print / Save as PDF</button>
   </body></html>`);
   win.document.close();
   win.focus();
@@ -2325,6 +3500,7 @@ function mgrExportRoster() {
     userName: currentUserName, userRole: 'manager',
     coachingNotes: coachingNotes,
     interview: { candidateName: candidateName, scores: JSON.parse(JSON.stringify(starValues)), notes: iNotes },
+    lazMethod: getLazExportData(),
     mgrRoster: mgrRoster
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -2349,6 +3525,7 @@ function exportAppJson() {
     videoUrls: videoRegistry.reduce(function(acc, v) { acc[v.id] = v.url; return acc; }, {}),
     coachingNotes: coachingNotes,
     interview: { candidateName: candidateName, scores: JSON.parse(JSON.stringify(starValues)), notes: notes },
+    lazMethod: getLazExportData(),
     mgrRoster: currentRole === 'manager' ? mgrRoster : undefined
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
@@ -2424,6 +3601,8 @@ function importAppJson() {
           mgrRenderRoster();
         }
         if (data.userRole === 'manager') setManagerTabs(true);
+        // Restore Laz Method
+        if (data.lazMethod) restoreLazData(data.lazMethod);
         alert('Session loaded successfully.');
       } catch(err) {
         alert('Could not load file. Make sure it\'s a valid TRS session JSON.');
@@ -2434,6 +3613,316 @@ function importAppJson() {
   input.click();
 }
 
+
+// ══════ LAZ METHOD PHASE 2 ══════
+const lazFitState = { excitement: null, floor: null, ceiling: null, availability: null, selfmgmt: null, ford: null };
+const lazFitLabels = { excitement: 'Excitement', floor: 'Fin. Floor', ceiling: 'Fin. Ceiling', availability: 'Availability', selfmgmt: 'Self-Mgmt', ford: 'Remote/FORD' };
+
+function switchPhase(n) {
+  const starWrap = document.getElementById('starPhaseWrap');
+  const lazWrap  = document.getElementById('lazPhaseWrap');
+  const btn1 = document.getElementById('phaseBtn1');
+  const btn2 = document.getElementById('phaseBtn2');
+  const sub  = document.getElementById('interviewSubtitle');
+  if (n === 1) {
+    starWrap.style.display = '';
+    lazWrap.style.display  = 'none';
+    btn1.style.background  = 'var(--navy)'; btn1.style.color = 'var(--gold)';
+    btn2.style.background  = 'transparent'; btn2.style.color = 'var(--muted)';
+    sub.textContent = 'Phase 1 · STAR Method — structured behavioral questions and scoring scorecard';
+  } else {
+    starWrap.style.display = 'none';
+    lazWrap.style.display  = '';
+    btn2.style.background  = 'var(--navy)'; btn2.style.color = 'var(--gold)';
+    btn1.style.background  = 'transparent'; btn1.style.color = 'var(--muted)';
+    sub.textContent = 'Phase 2 · Laz Method — life-cycle & operational fit check';
+    renderLazFitSummary();
+    // Sync candidate name
+    const p1name = document.getElementById('candidateName');
+    const lazname = document.getElementById('lazCandidateName');
+    if (p1name && lazname && !lazname.value && p1name.value) lazname.value = p1name.value;
+  }
+}
+
+function syncCandidateNames(from) {
+  const p1 = document.getElementById('candidateName');
+  const laz = document.getElementById('lazCandidateName');
+  if (!p1 || !laz) return;
+  if (from === 'laz') p1.value = laz.value;
+  else laz.value = p1.value;
+}
+
+function toggleLazCard(id) {
+  const card = document.getElementById('lazCard-' + id);
+  if (!card) return;
+  card.classList.toggle('open');
+}
+
+function setLazFit(id, val) {
+  lazFitState[id] = lazFitState[id] === val ? null : val;
+  const badge = document.getElementById('lazFit-' + id);
+  if (badge) {
+    badge.querySelectorAll('.fit-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.classList.contains(val) && lazFitState[id] !== null);
+    });
+  }
+  renderLazFitSummary();
+}
+
+function renderLazFitSummary() {
+  const el = document.getElementById('lazFitSummary');
+  if (!el) return;
+  const icons = { green: '🟢', yellow: '🟡', red: '🔴', null: '⚪' };
+  el.innerHTML = Object.keys(lazFitState).map(function(k) {
+    const v = lazFitState[k];
+    return '<div class="laz-summary-item">'
+      + '<div class="laz-summary-dot">' + (icons[v] || icons['null']) + '</div>'
+      + '<div class="laz-summary-label">' + lazFitLabels[k] + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Verdict
+  const vals = Object.values(lazFitState).filter(function(v) { return v !== null; });
+  const vEl = document.getElementById('lazVerdictText');
+  const sEl = document.getElementById('lazVerdictSub');
+  const box = document.getElementById('lazVerdictBox');
+  if (!vals.length) {
+    vEl.textContent = '—';
+    sEl.textContent = 'Mark the 6 fit indicators above to see your read';
+    box.style.background = 'var(--cream)';
+    box.style.borderColor = 'var(--border)';
+    return;
+  }
+  const greens = vals.filter(function(v) { return v === 'green'; }).length;
+  const reds   = vals.filter(function(v) { return v === 'red'; }).length;
+  const total  = vals.length;
+  var fordFit = lazFitState['ford'];
+  if (greens >= 5) {
+    vEl.textContent = '✓ Strong long-term fit';
+    sEl.textContent = 'Life-cycle and remote alignment are solid. Proceed with confidence.';
+    box.style.background = 'var(--green-light)'; box.style.borderColor = '#a8d5bf';
+  } else if (reds >= 3 || (fordFit === 'red' && reds >= 2)) {
+    vEl.textContent = '✗ Significant misalignment';
+    sEl.textContent = 'Multiple red flags including remote readiness. Seriously reconsider before proceeding.';
+    box.style.background = 'var(--red-light)'; box.style.borderColor = '#e5b5b5';
+  } else if (fordFit === 'red') {
+    vEl.textContent = '⚠ Remote environment is a blocker';
+    sEl.textContent = 'Candidate may be a fit on paper but the remote setup will undermine performance.';
+    box.style.background = 'var(--red-light)'; box.style.borderColor = '#e5b5b5';
+  } else if (reds >= 1 && greens < 3) {
+    vEl.textContent = '↗ Conditional — address the gaps';
+    sEl.textContent = 'Some alignment but red flags need a direct conversation before offer.';
+    box.style.background = 'var(--gold-pale)'; box.style.borderColor = 'var(--gold)';
+  } else {
+    vEl.textContent = '✓ Generally aligned';
+    sEl.textContent = 'No major red flags. Keep an eye on the yellow indicators in week 1.';
+    box.style.background = 'var(--green-light)'; box.style.borderColor = '#a8d5bf';
+  }
+}
+
+function getFordMatrixVal(name) {
+  var r = document.querySelector('input[name="' + name + '"]:checked');
+  return r ? r.value : '';
+}
+function getLazExportData() {
+  return {
+    candidateName: (document.getElementById('lazCandidateName') || {}).value || '',
+    fitState: JSON.parse(JSON.stringify(lazFitState)),
+    floorNum:  (document.getElementById('lazFloorNum')   || {}).value || '',
+    ceilingNum:(document.getElementById('lazCeilingNum') || {}).value || '',
+    notes: {
+      excitement:         (document.getElementById('lazNote-excitement')        || {}).value || '',
+      floor:              (document.getElementById('lazNote-floor')             || {}).value || '',
+      ceiling:            (document.getElementById('lazNote-ceiling')           || {}).value || '',
+      availability:       (document.getElementById('lazNote-availability')      || {}).value || '',
+      selfmgmt:           (document.getElementById('lazNote-selfmgmt')          || {}).value || '',
+      fordFamily:         (document.getElementById('lazNote-ford-family')       || {}).value || '',
+      fordOccupation:     (document.getElementById('lazNote-ford-occupation')   || {}).value || '',
+      fordRecreation:     (document.getElementById('lazNote-ford-recreation')   || {}).value || '',
+      fordDependability:  (document.getElementById('lazNote-ford-dependability')|| {}).value || ''
+    },
+    fordMatrix: {
+      workspace:    getFordMatrixVal('fordWorkspace'),
+      remoteExp:    getFordMatrixVal('fordRemoteExp'),
+      connectivity: getFordMatrixVal('fordConnectivity')
+    },
+    alignmentNotes: (document.getElementById('lazAlignmentNotes') || {}).value || ''
+  };
+}
+
+function restoreLazData(laz) {
+  if (!laz) return;
+  if (laz.candidateName) {
+    var el = document.getElementById('lazCandidateName');
+    if (el) el.value = laz.candidateName;
+  }
+  if (laz.fitState) {
+    Object.keys(laz.fitState).forEach(function(k) {
+      if (laz.fitState[k]) { lazFitState[k] = laz.fitState[k]; setLazFit(k, laz.fitState[k]); lazFitState[k] = laz.fitState[k]; }
+    });
+  }
+  if (laz.floorNum)   { var e = document.getElementById('lazFloorNum');   if (e) e.value = laz.floorNum; }
+  if (laz.ceilingNum) { var e = document.getElementById('lazCeilingNum'); if (e) e.value = laz.ceilingNum; }
+  if (laz.notes) {
+    var noteMap = {
+      excitement: 'lazNote-excitement', floor: 'lazNote-floor', ceiling: 'lazNote-ceiling',
+      availability: 'lazNote-availability', selfmgmt: 'lazNote-selfmgmt',
+      fordFamily: 'lazNote-ford-family', fordOccupation: 'lazNote-ford-occupation',
+      fordRecreation: 'lazNote-ford-recreation', fordDependability: 'lazNote-ford-dependability'
+    };
+    Object.keys(noteMap).forEach(function(k) {
+      var e = document.getElementById(noteMap[k]);
+      if (e && laz.notes[k]) e.value = laz.notes[k];
+    });
+  }
+  if (laz.fordMatrix) {
+    var fm = laz.fordMatrix;
+    if (fm.workspace)    { var r = document.querySelector('input[name="fordWorkspace"][value="'    + fm.workspace    + '"]'); if (r) r.checked = true; }
+    if (fm.remoteExp)    { var r = document.querySelector('input[name="fordRemoteExp"][value="'    + fm.remoteExp    + '"]'); if (r) r.checked = true; }
+    if (fm.connectivity) { var r = document.querySelector('input[name="fordConnectivity"][value="' + fm.connectivity + '"]'); if (r) r.checked = true; }
+    updateFordMatrix();
+  }
+  if (laz.alignmentNotes) { var e = document.getElementById('lazAlignmentNotes'); if (e) e.value = laz.alignmentNotes; }
+  renderLazFitSummary();
+}
+
+function exportLazTxt() {
+  const d = getLazExportData();
+  const fitLine = function(k) { return '  ' + lazFitLabels[k] + ': ' + (d.fitState[k] ? d.fitState[k].toUpperCase() : '—'); };
+  const noteLine = function(k, label) { return label + ':\n  ' + (d.notes[k] || '(none)'); };
+  var wsLabels  = { dedicated: 'Private room / door closes', semi: 'Shared but workable', none: 'Kitchen table / no separation', '': '—' };
+  var expLabels = { veteran: 'Veteran — has systems', some: 'Some experience', new: 'New to remote', '': '—' };
+  var conLabels = { ready: 'Hotspot / coffee shop ready', partial: 'Has a plan but vague', none: 'No backup — would go offline', '': '—' };
+  var fm = d.fordMatrix || {};
+  const text = [
+    'TRS INTERVIEW — LAZ METHOD PHASE 2',
+    '='.repeat(42),
+    'Candidate: ' + (d.candidateName || 'Unknown'),
+    'Date: ' + new Date().toLocaleDateString('en-US', { dateStyle: 'long' }),
+    '',
+    'FIT INDICATORS:',
+    fitLine('excitement'), fitLine('floor'), fitLine('ceiling'), fitLine('availability'), fitLine('selfmgmt'), fitLine('ford'),
+    '',
+    'FINANCIAL:',
+    '  Happy number (floor): ' + (d.floorNum || '—'),
+    '  3-year goal (ceiling): ' + (d.ceilingNum || '—'),
+    '',
+    noteLine('excitement', 'EXCITEMENT & FIT'),
+    noteLine('floor', 'FINANCIAL FLOOR'),
+    noteLine('ceiling', 'FINANCIAL CEILING'),
+    noteLine('availability', 'AVAILABILITY VIBE'),
+    noteLine('selfmgmt', 'SELF-MANAGEMENT'),
+    '',
+    'REMOTE REALITY — FORD CHECK',
+    '  Workspace: '    + (wsLabels[fm.workspace    || ''] || '—'),
+    '  Remote exp: '   + (expLabels[fm.remoteExp   || ''] || '—'),
+    '  Connectivity: ' + (conLabels[fm.connectivity|| ''] || '—'),
+    noteLine('fordFamily',        'F · Family / Home Energy'),
+    noteLine('fordOccupation',    'O · Remote History'),
+    noteLine('fordRecreation',    'R · Work-Life Line'),
+    noteLine('fordDependability', 'D · Plan B / Dependability'),
+    '',
+    'OVERALL ALIGNMENT NOTES:',
+    d.alignmentNotes || '(none)'
+  ].join('\n');
+  const blob = new Blob([text], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'TRS-LazMethod-' + (d.candidateName || 'candidate').replace(/\s+/g, '-') + '.txt';
+  a.click();
+}
+
+function exportLazPdf() {
+  const d = getLazExportData();
+  const fitColors = { green: '#1d6b4a', yellow: '#8a6a00', red: '#8b2020', null: '#999' };
+  const fitLabels2 = { green: '🟢 Strong fit', yellow: '🟡 Uncertain', red: '🔴 Misaligned', null: '⚪ Not rated' };
+  const rows = Object.keys(lazFitLabels).map(function(k) {
+    var v = d.fitState[k];
+    return '<tr><td><strong>' + lazFitLabels[k] + '</strong></td><td style="color:' + fitColors[v || 'null'] + ';font-weight:600;">' + fitLabels2[v || 'null'] + '</td></tr>';
+  }).join('');
+  var wsLabels2  = { dedicated: 'Private room / door closes', semi: 'Shared but workable', none: 'Kitchen table / no separation' };
+  var expLabels2 = { veteran: 'Veteran — has systems', some: 'Some experience', new: 'New to remote' };
+  var conLabels2 = { ready: 'Hotspot / coffee shop ready', partial: 'Has a plan but vague', none: 'No backup — would go offline' };
+  var fm2 = d.fordMatrix || {};
+  const noteRows = [
+    ['Excitement & Fit', d.notes.excitement],
+    ['Financial Floor — ' + (d.floorNum || '—'), d.notes.floor],
+    ['Financial Ceiling — ' + (d.ceilingNum || '—'), d.notes.ceiling],
+    ['24/7 Availability Vibe', d.notes.availability],
+    ['Self-Management', d.notes.selfmgmt],
+    ['F · Family / Home Energy', d.notes.fordFamily || ''],
+    ['O · Remote History', d.notes.fordOccupation || ''],
+    ['R · Work-Life Line', d.notes.fordRecreation || ''],
+    ['D · Plan B / Dependability', d.notes.fordDependability || '']
+  ].map(function(r) {
+    return '<div style="margin-bottom:14px;"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#1a3a5c;margin-bottom:4px;">' + r[0] + '</div>'
+      + '<div style="background:#f5f2eb;padding:10px 12px;border-radius:6px;font-size:13px;line-height:1.7;white-space:pre-wrap;">' + (r[1] || '(none)') + '</div></div>';
+  }).join('');
+  const win = window.open('', '_blank');
+  win.document.write('<!DOCTYPE html><html><head><title>TRS Laz Method — ' + (d.candidateName || 'Candidate') + '</title>'
+    + '<style>body{font-family:Arial,sans-serif;padding:32px 40px;max-width:700px;margin:0 auto;color:#1a1a1a;}'
+    + 'h1{font-size:20px;color:#1a3a5c;border-bottom:2px solid #c8a84b;padding-bottom:8px;margin-bottom:4px;}'
+    + '.meta{font-size:12px;color:#666;margin-bottom:20px;}'
+    + 'table{width:100%;border-collapse:collapse;margin:12px 0;}'
+    + 'th{background:#1a3a5c;color:#c8a84b;font-size:11px;text-align:left;padding:8px 10px;text-transform:uppercase;letter-spacing:.04em;}'
+    + 'td{padding:8px 10px;border-bottom:1px solid #eee;font-size:13px;}'
+    + 'h2{font-size:12px;color:#1a3a5c;text-transform:uppercase;letter-spacing:.05em;margin:20px 0 8px;}'
+    + '.notes-box{background:#f5f2eb;padding:12px;border-radius:6px;font-size:13px;line-height:1.7;white-space:pre-wrap;}'
+    + '@media print{button{display:none;}}'
+    + '</style></head><body>'
+    + '<h1>TRS Sales Rep — Laz Method Phase 2</h1>'
+    + '<div class="meta">Candidate: <strong>' + (d.candidateName || 'Unknown') + '</strong> &nbsp;·&nbsp; Date: ' + new Date().toLocaleDateString('en-US', { dateStyle: 'long' }) + '</div>'
+    + '<h2>Fit Indicators</h2>'
+    + '<table><tr><th>Category</th><th>Fit Rating</th></tr>' + rows + '</table>'
+    + '<h2>Financial Profile</h2>'
+    + '<table><tr><th>Metric</th><th>Value</th></tr>'
+    + '<tr><td>Happy number (floor)</td><td><strong>' + (d.floorNum || '—') + '</strong></td></tr>'
+    + '<tr><td>3-year goal (ceiling)</td><td><strong>' + (d.ceilingNum || '—') + '</strong></td></tr>'
+    + '</table>'
+    + '<h2>Remote Reality — FORD Check</h2>'
+    + '<table><tr><th>Category</th><th>Assessment</th></tr>'
+    + '<tr><td>Dedicated workspace</td><td>' + (wsLabels2[fm2.workspace]    || '—') + '</td></tr>'
+    + '<tr><td>Remote experience</td><td>'   + (expLabels2[fm2.remoteExp]   || '—') + '</td></tr>'
+    + '<tr><td>Connectivity backup</td><td>' + (conLabels2[fm2.connectivity]|| '—') + '</td></tr>'
+    + '</table>'
+    + '<h2>Question Notes</h2>' + noteRows
+    + '<h2>Overall Alignment Notes</h2>'
+    + '<div class="notes-box">' + (d.alignmentNotes || '(none)') + '</div>'
+    + '<br><button onclick="window.print()">🖨 Print / Save as PDF</button>'
+    + '</body></html>');
+  win.document.close();
+  win.focus();
+}
+
+
+function updateFordMatrix() {
+  var workspace    = getFordMatrixVal('fordWorkspace');
+  var remoteExp    = getFordMatrixVal('fordRemoteExp');
+  var connectivity = getFordMatrixVal('fordConnectivity');
+  var score = 0, maxScore = 9;
+  var wsMap  = { dedicated: 3, semi: 2, none: 0 };
+  var expMap = { veteran: 3, some: 2, new: 1 };
+  var conMap = { ready: 3, partial: 2, none: 0 };
+  if (workspace)    score += wsMap[workspace]    || 0;
+  if (remoteExp)    score += expMap[remoteExp]   || 0;
+  if (connectivity) score += conMap[connectivity]|| 0;
+  var pct = Math.round(score / maxScore * 100);
+  var el  = document.getElementById('fordReadinessScore');
+  var lbl = document.getElementById('fordReadinessLabel');
+  if (!workspace && !remoteExp && !connectivity) {
+    if (el) el.textContent = '—';
+    if (lbl) lbl.textContent = 'Complete the matrix above to calculate';
+    return;
+  }
+  var color, label;
+  if (pct >= 78)      { color = 'var(--green)'; label = 'Remote-ready — low risk'; }
+  else if (pct >= 56) { color = '#8a6a00';      label = 'Manageable — coach the gaps'; }
+  else                { color = 'var(--red)';   label = 'High risk — remote environment concerns'; }
+  if (el)  { el.textContent = pct + '%'; el.style.color = color; }
+  if (lbl) { lbl.textContent = label; lbl.style.color = color; }
+}
+
+buildPrescreen();
 buildInterview();
 
 function buildVideoManager() {
@@ -3149,7 +4638,7 @@ updateSectionBadges();
 // Deep link — only honour if role allows
 function handleDeepLink() {
   const hash = location.hash.replace('#','');
-  const mgrOnly = ['manager','coaching','interview','videos'];
+  const mgrOnly = ['manager','coaching','prescreen','interview','videos','onboarding'];
   if (hash && !(mgrOnly.includes(hash) && currentRole !== 'manager')) {
     const tab = document.querySelector(`[onclick*="showView('${hash}'"]`);
     if (tab) showView(hash, tab);
@@ -3160,7 +4649,849 @@ handleDeepLink();
 document.getElementById('onloadName').addEventListener('keydown', e => { if(e.key==='Enter') { if(currentRole==='manager') document.getElementById('onloadPin').focus(); else startSession(); }});
 document.getElementById('onloadPin').addEventListener('keydown', e => { if(e.key==='Enter') startSession(); });
 
+// ══════ ONBOARDING MODULE ══════
+
+// ── State ──
+const obState = {
+  currentStep: 0,
+  stepsComplete: [false, false, false, false, false],
+  signatures: {},   // key -> { name, timestamp, token }
+  uploads: {},      // key -> { name, type, dataUrl, pdfBlob }
+  reviewChecks: {},
+  finalized: false
+};
+
+const obUploadDefs = [
+  { key: 'gov_id',    label: 'Government-Issued Photo ID',   required: true,  hint: 'Driver\'s license, passport, or state ID' },
+  { key: 'i9',        label: 'I-9 Employment Eligibility',   required: true,  hint: 'Completed I-9 form (PDF)' },
+  { key: 'w4',        label: 'W-4 Federal Tax Withholding',  required: true,  hint: 'Signed W-4 form' },
+  { key: 'direct_dep',label: 'Direct Deposit Form',          required: false, hint: 'Optional — bank routing info' },
+];
+
+const obReviewDefs = [
+  { key: 'r_identity',  label: 'Identity verified against uploaded ID' },
+  { key: 'r_offer',     label: 'Offer terms confirmed verbally with candidate' },
+  { key: 'r_legal',     label: 'All legal disclosures reviewed and understood' },
+  { key: 'r_start',     label: 'Start date and first-day logistics confirmed' },
+  { key: 'r_system',    label: 'Odoo login / system access requested' },
+  { key: 'r_training',  label: 'Training schedule (TRS) shared with candidate' },
+];
+
+const obDocLabels = {
+  offer:      'Offer Letter',
+  noncompete: 'Non-Compete Agreement',
+  atwill:     'At-Will Acknowledgment',
+  nda:        'Confidentiality / NDA',
+  conduct:    'Code of Conduct',
+};
+
+// ── Sync candidate name to sidebar ──
+function obSyncName() {
+  const n = document.getElementById('obCandidateName').value.trim();
+  document.getElementById('obSidebarName').textContent = n || 'No candidate';
+}
+
+// ── Step navigation ──
+function obGoStep(n) {
+  const maxAllowed = obState.stepsComplete.findIndex(v => !v);
+  const cap = maxAllowed === -1 ? 4 : maxAllowed;
+  if (n > cap) return;
+  obState.currentStep = n;
+  document.querySelectorAll('.ob-panel').forEach((p, i) => p.classList.toggle('ob-active', i === n));
+  for (let i = 0; i <= 4; i++) {
+    const row  = document.getElementById('ob-step-' + i);
+    const icon = document.getElementById('ob-step-icon-' + i);
+    if (!row || !icon) continue;
+    row.classList.toggle('active-step', i === n);
+    row.classList.toggle('locked', i > cap);
+    icon.className = 'ob-step-icon';
+    if (obState.stepsComplete[i])   { icon.className += ' done';    icon.textContent = '✓'; }
+    else if (i === n)               { icon.className += ' current'; icon.textContent = i + 1; }
+    else                            { icon.className += ' pending'; icon.textContent = i + 1; }
+  }
+}
+
+function obAdvance(fromStep) {
+  obState.stepsComplete[fromStep] = true;
+  if (fromStep + 1 <= 4) obGoStep(fromStep + 1);
+  else obGoStep(fromStep);
+  if (fromStep + 1 === 4) obRenderPackageList();
+}
+
+// ── Signature modal ──
+let obSignTarget = null;
+function openObSignModal(docKey) {
+  obSignTarget = docKey;
+  const label = obDocLabels[docKey] || docKey;
+  document.getElementById('obSignModalTitle').textContent = 'Sign: ' + label;
+  document.getElementById('obSignModalDesc').textContent =
+    'Type your full legal name to electronically acknowledge and sign the ' + label + '. This creates a timestamped audit record.';
+  const now = new Date();
+  document.getElementById('obSignMeta').innerHTML =
+    'Document: <strong>' + label + '</strong><br>' +
+    'Date: <strong>' + now.toLocaleDateString('en-US', {dateStyle:'long'}) + '</strong><br>' +
+    'Time: <strong>' + now.toLocaleTimeString('en-US', {timeStyle:'short'}) + '</strong><br>' +
+    'Record ID: <strong>' + obGenToken() + '</strong>';
+  document.getElementById('obSignName').value = '';
+  document.getElementById('obSignModal').classList.add('open');
+  setTimeout(() => document.getElementById('obSignName').focus(), 100);
+}
+function closeObSignModal() {
+  document.getElementById('obSignModal').classList.remove('open');
+  obSignTarget = null;
+}
+function obGenToken() {
+  return 'TRS-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).slice(2,6).toUpperCase();
+}
+function confirmObSign() {
+  const name = document.getElementById('obSignName').value.trim();
+  if (!name) { document.getElementById('obSignName').style.borderColor = 'var(--red)'; return; }
+  document.getElementById('obSignName').style.borderColor = '';
+  const key = obSignTarget; // capture before closeObSignModal nulls it
+  const token = obGenToken();
+  const now = new Date();
+  obState.signatures[key] = {
+    name, token,
+    timestamp: now.toLocaleString('en-US', {dateStyle:'long', timeStyle:'short'}),
+    iso: now.toISOString()
+  };
+  closeObSignModal();
+  obApplySignature(key);
+}
+
+function obAuditHtml(sig, label) {
+  return '<strong>✓ Signed:</strong> ' + label + '<br>' +
+         '<strong>Name:</strong> ' + sig.name + '<br>' +
+         '<strong>Date:</strong> ' + sig.timestamp + '<br>' +
+         '<strong>Record ID:</strong> ' + sig.token;
+}
+
+function obApplySignature(key) {
+  const sig = obState.signatures[key];
+  const label = obDocLabels[key] || key;
+  if (key === 'offer') {
+    document.getElementById('ob-offer-unsigned').style.display = 'none';
+    document.getElementById('ob-offer-signed').style.display = '';
+    document.getElementById('ob-offer-audit').innerHTML = obAuditHtml(sig, label);
+  } else {
+    // Legal disclosures
+    const statusEl = document.getElementById('ob-' + key + '-status');
+    const btnEl    = document.getElementById('ob-' + key + '-btn');
+    if (statusEl) statusEl.innerHTML = '<span class="doc-status-badge signed">✓ Signed</span>';
+    if (btnEl) { btnEl.textContent = 'Re-sign'; btnEl.classList.remove('primary'); }
+    obCheckLegalComplete();
+  }
+}
+
+function obCheckLegalComplete() {
+  const required = ['noncompete','atwill','nda','conduct'];
+  const allDone = required.every(k => obState.signatures[k]);
+  document.getElementById('ob-legal-incomplete').style.display = allDone ? 'none' : '';
+  document.getElementById('ob-legal-complete').style.display   = allDone ? ''     : 'none';
+}
+
+// ── Upload handling ──
+function obRenderUploads() {
+  const tbody = document.getElementById('ob-upload-rows');
+  tbody.innerHTML = '';
+  obUploadDefs.forEach(def => {
+    const up = obState.uploads[def.key];
+    const statusHtml = up
+      ? '<span class="doc-status-badge received">✓ Received</span>'
+      : (def.required
+          ? '<span class="doc-status-badge missing">✗ Missing</span>'
+          : '<span class="doc-status-badge pending">— Optional</span>');
+    const actionHtml = up
+      ? `<button onclick="obTriggerUpload('${def.key}')" class="doc-action-btn">Replace</button>`
+      : `<button onclick="obTriggerUpload('${def.key}')" class="doc-action-btn ${def.required ? 'primary' : ''}">Upload</button>`;
+    tbody.innerHTML += `<tr>
+      <td><strong>${def.label}</strong><div style="font-size:11px;color:var(--muted);">${def.hint}</div></td>
+      <td><span style="font-size:11px;color:var(--muted);">Candidate</span></td>
+      <td id="ob-upload-status-${def.key}">${statusHtml}</td>
+      <td>${actionHtml}</td>
+    </tr>`;
+  });
+  obCheckUploadsComplete();
+}
+
+function obTriggerUpload(key) {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.pdf,.jpg,.jpeg,.png';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const dataUrl = ev.target.result;
+      const isImage = file.type.startsWith('image/');
+      if (isImage) {
+        obImageToPdf(dataUrl, file.name, function(pdfBlob) {
+          obState.uploads[key] = { name: file.name, type: 'application/pdf', dataUrl, pdfBlob, originalType: file.type };
+          obRenderUploads();
+        });
+      } else {
+        obState.uploads[key] = { name: file.name, type: file.type, dataUrl, pdfBlob: null };
+        obRenderUploads();
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+  input.click();
+}
+
+// Convert image to PDF blob via Canvas
+function obImageToPdf(dataUrl, filename, cb) {
+  const img = new Image();
+  img.onload = function() {
+    const canvas = document.createElement('canvas');
+    const maxW = 595, maxH = 842; // A4 pt
+    let w = img.width, h = img.height;
+    if (w > maxW) { h = h * maxW / w; w = maxW; }
+    if (h > maxH) { w = w * maxH / h; h = maxH; }
+    canvas.width = w; canvas.height = h;
+    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+    // Build minimal PDF wrapping the image
+    const imgData = canvas.toDataURL('image/jpeg', 0.85).split(',')[1];
+    const pdfHeader = `%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${Math.round(w)} ${Math.round(h)}] /Contents 4 0 R /Resources << /XObject << /Im1 5 0 R >> >> >>\nendobj\n4 0 obj\n<< /Length 26 >>\nstream\nq ${Math.round(w)} 0 0 ${Math.round(h)} 0 0 cm /Im1 Do Q\nendstream\nendobj\n`;
+    // Use a simple approach: just store canvas jpeg blob and mark as converted
+    canvas.toBlob(function(blob) { cb(blob); }, 'image/jpeg', 0.85);
+  };
+  img.src = dataUrl;
+}
+
+function obCheckUploadsComplete() {
+  const required = obUploadDefs.filter(d => d.required);
+  const allDone = required.every(d => obState.uploads[d.key]);
+  document.getElementById('ob-uploads-incomplete').style.display = allDone ? 'none' : '';
+  document.getElementById('ob-uploads-complete').style.display   = allDone ? ''     : 'none';
+}
+
+// ── Review checklist ──
+function obRenderReview() {
+  const wrap = document.getElementById('ob-review-list');
+  wrap.innerHTML = '';
+  obReviewDefs.forEach(def => {
+    const checked = obState.reviewChecks[def.key] || false;
+    wrap.innerHTML += `<label style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:10px 14px;background:var(--white);border:1.5px solid ${checked ? 'var(--green)' : 'var(--border)'};border-radius:9px;transition:border-color .15s;">
+      <input type="checkbox" ${checked ? 'checked' : ''} onchange="obToggleReview('${def.key}',this.checked)"
+        style="width:17px;height:17px;accent-color:var(--green);flex-shrink:0;">
+      <span style="font-size:13px;font-weight:${checked ? '600' : '400'};color:${checked ? 'var(--green)' : 'var(--text)'};">${def.label}</span>
+    </label>`;
+  });
+  obCheckReviewComplete();
+}
+
+function obToggleReview(key, val) {
+  obState.reviewChecks[key] = val;
+  obRenderReview();
+}
+
+function obCheckReviewComplete() {
+  const allDone = obReviewDefs.every(d => obState.reviewChecks[d.key]);
+  document.getElementById('ob-review-incomplete').style.display = allDone ? 'none' : '';
+  document.getElementById('ob-review-complete').style.display   = allDone ? ''     : 'none';
+}
+
+// ── Package list for final step ──
+function obRenderPackageList() {
+  const cand = document.getElementById('obCandidateName').value.trim() || 'Candidate';
+  let html = '';
+  // Signatures
+  Object.entries(obState.signatures).forEach(([k, sig]) => {
+    html += `✓ <strong>${obDocLabels[k] || k}</strong> — signed by ${sig.name} on ${sig.timestamp}<br>`;
+  });
+  // Uploads
+  obUploadDefs.forEach(def => {
+    const up = obState.uploads[def.key];
+    if (up) html += `✓ <strong>${def.label}</strong> — ${up.name}${up.pdfBlob ? ' (converted to PDF)' : ''}<br>`;
+  });
+  // Summary
+  html += `✓ <strong>Onboarding Summary PDF</strong> — auto-generated<br>`;
+  document.getElementById('ob-package-list').innerHTML = html;
+
+  // Progress bar
+  const totalItems = Object.keys(obDocLabels).length + obUploadDefs.filter(d=>d.required).length + 1;
+  const doneItems  = Object.keys(obState.signatures).length + obUploadDefs.filter(d=>d.required && obState.uploads[d.key]).length + 1;
+  const pct = Math.round(doneItems / totalItems * 100);
+  document.getElementById('ob-final-bar').style.width = pct + '%';
+  document.getElementById('ob-final-bar-label').textContent = pct + '% complete — ' + doneItems + ' of ' + totalItems + ' items ready';
+}
+
+// ── Summary PDF export ──
+function obExportSummaryPdf() {
+  const cand     = document.getElementById('obCandidateName').value.trim() || 'Unknown Candidate';
+  const role     = document.getElementById('obRole').value.trim() || '—';
+  const startRaw = document.getElementById('obStartDate').value;
+  const startStr = startRaw ? new Date(startRaw + 'T12:00:00').toLocaleDateString('en-US',{dateStyle:'long'}) : '—';
+  const salary   = document.getElementById('obSalary').value.trim() || '—';
+  const commission = document.getElementById('obCommission').value.trim() || '—';
+  const mgr      = document.getElementById('obManager').value.trim() || '—';
+  const loc      = document.getElementById('obLocation').value.trim() || '—';
+  const offerNotes = document.getElementById('obOfferNotes').value.trim() || '—';
+
+  let sigRows = Object.entries(obState.signatures).map(([k, sig]) =>
+    `<tr><td><strong>${obDocLabels[k]||k}</strong></td><td>${sig.name}</td><td>${sig.timestamp}</td><td style="font-family:monospace;font-size:11px;">${sig.token}</td></tr>`
+  ).join('');
+
+  let uploadRows = obUploadDefs.map(def => {
+    const up = obState.uploads[def.key];
+    return `<tr><td><strong>${def.label}</strong></td><td>${def.required ? 'Required' : 'Optional'}</td><td>${up ? '✓ ' + up.name : '✗ Not uploaded'}</td></tr>`;
+  }).join('');
+
+  let reviewRows = obReviewDefs.map(def =>
+    `<tr><td>${def.label}</td><td style="color:${obState.reviewChecks[def.key] ? '#1d6b4a' : '#8b2020'};font-weight:700;">${obState.reviewChecks[def.key] ? '✓ Confirmed' : '✗ Not confirmed'}</td></tr>`
+  ).join('');
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>TRS Onboarding — ${cand}</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:Arial,sans-serif;padding:36px 44px;max-width:760px;margin:0 auto;color:#1a1a1a;font-size:13px;line-height:1.6;}
+    .rh{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:3px solid #c8a84b;padding-bottom:14px;margin-bottom:20px;}
+    .rt{font-size:22px;font-weight:700;color:#1a3a5c;}.rs{font-size:12px;color:#888;margin-top:3px;}
+    .logo{font-family:monospace;font-size:14px;font-weight:700;background:#1a3a5c;color:#c8a84b;padding:6px 12px;border-radius:6px;}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 24px;background:#f5f2eb;border-radius:10px;padding:16px 18px;margin-bottom:20px;}
+    .info-item label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:2px;}
+    .info-item span{font-size:13px;font-weight:600;color:#1a3a5c;}
+    h2{font-size:10px;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid #e0dbd0;padding-bottom:6px;margin:20px 0 10px;}
+    table{width:100%;border-collapse:collapse;margin-bottom:12px;}
+    th{background:#1a3a5c;color:#c8a84b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;text-align:left;}
+    td{padding:9px 10px;border-bottom:1px solid #eee;font-size:12px;vertical-align:top;}
+    .notes{background:#f5f2eb;border-radius:8px;padding:12px 14px;font-size:12px;line-height:1.7;white-space:pre-wrap;}
+    @media print{button{display:none;}}
+  </style></head><body>
+  <div class="rh">
+    <div><div class="rt">Onboarding Summary</div><div class="rs">TRS — New Hire Package</div></div>
+    <div class="logo">TRS</div>
+  </div>
+  <div class="info-grid">
+    <div class="info-item"><label>Candidate</label><span>${cand}</span></div>
+    <div class="info-item"><label>Role</label><span>${role}</span></div>
+    <div class="info-item"><label>Start Date</label><span>${startStr}</span></div>
+    <div class="info-item"><label>Reporting Manager</label><span>${mgr}</span></div>
+    <div class="info-item"><label>Compensation</label><span>${salary}</span></div>
+    <div class="info-item"><label>Commission</label><span>${commission}</span></div>
+    <div class="info-item"><label>Location</label><span>${loc}</span></div>
+    <div class="info-item"><label>Generated</label><span>${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}</span></div>
+  </div>
+  ${offerNotes !== '—' ? `<h2>Offer Notes</h2><div class="notes">${offerNotes}</div>` : ''}
+  <h2>Digital Audit Trail — Signatures</h2>
+  <table><thead><tr><th>Document</th><th>Signed By</th><th>Timestamp</th><th>Record ID</th></tr></thead><tbody>${sigRows || '<tr><td colspan="4" style="color:#aaa;">No signatures recorded</td></tr>'}</tbody></table>
+  <h2>Document Uploads</h2>
+  <table><thead><tr><th>Document</th><th>Required</th><th>Status</th></tr></thead><tbody>${uploadRows}</tbody></table>
+  <h2>Final Review Checklist</h2>
+  <table><thead><tr><th>Item</th><th>Status</th></tr></thead><tbody>${reviewRows}</tbody></table>
+  <br><button onclick="window.print()" style="padding:9px 18px;background:#1a3a5c;color:#c8a84b;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🖨 Print / Save as PDF</button>
+  </body></html>`);
+  win.document.close(); win.focus();
+}
+
+// ── Zip export ──
+async function obExportZip() {
+  const cand = document.getElementById('obCandidateName').value.trim() || 'Candidate';
+  const btn = event.target;
+  btn.textContent = '⏳ Building package...';
+  btn.disabled = true;
+
+  try {
+    // Dynamically load JSZip from CDN
+    if (!window.JSZip) {
+      await new Promise((res, rej) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js';
+        s.onload = res; s.onerror = rej;
+        document.head.appendChild(s);
+      });
+    }
+
+    const zip = new JSZip();
+    const folder = zip.folder(cand.replace(/\s+/g,'-') + '_Onboarding');
+
+    // 1. Signature audit log as text file
+    let auditLog = 'TRS ONBOARDING AUDIT TRAIL\n' + '='.repeat(44) + '\n';
+    auditLog += 'Candidate: ' + cand + '\n';
+    auditLog += 'Generated: ' + new Date().toLocaleString('en-US', {dateStyle:'long', timeStyle:'short'}) + '\n\n';
+    auditLog += 'SIGNATURES\n' + '-'.repeat(30) + '\n';
+    Object.entries(obState.signatures).forEach(([k, sig]) => {
+      auditLog += (obDocLabels[k]||k) + '\n  Signed by: ' + sig.name + '\n  Timestamp: ' + sig.timestamp + '\n  Record ID: ' + sig.token + '\n\n';
+    });
+    folder.file('audit-trail.txt', auditLog);
+
+    // 2. Uploaded documents
+    const uploadsFolder = folder.folder('documents');
+    for (const def of obUploadDefs) {
+      const up = obState.uploads[def.key];
+      if (!up) continue;
+      const ext = up.pdfBlob ? '.jpg' : (up.type === 'application/pdf' ? '.pdf' : '.bin');
+      const fname = def.key + ext;
+      if (up.pdfBlob) {
+        uploadsFolder.file(fname, up.pdfBlob);
+      } else {
+        // fetch the dataUrl as blob
+        const res = await fetch(up.dataUrl);
+        const blob = await res.blob();
+        uploadsFolder.file(fname, blob);
+      }
+    }
+
+    // 3. Session JSON snapshot
+    const snapshot = {
+      version: 5,
+      generated: new Date().toISOString(),
+      candidate: cand,
+      role: document.getElementById('obRole').value.trim(),
+      startDate: document.getElementById('obStartDate').value,
+      signatures: obState.signatures,
+      uploads: Object.fromEntries(Object.entries(obState.uploads).map(([k,v])=>([k, { name: v.name, type: v.type }]))),
+      reviewChecks: obState.reviewChecks,
+      finalized: true
+    };
+    folder.file('session.json', JSON.stringify(snapshot, null, 2));
+
+    const zipBlob = await zip.generateAsync({ type: 'blob' });
+    const url = URL.createObjectURL(zipBlob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = cand.replace(/\s+/g,'-') + '_Onboarding_Package.zip';
+    a.click();
+    URL.revokeObjectURL(url);
+
+    obState.finalized = true;
+    document.getElementById('ob-finalized-badge').style.display = '';
+    btn.textContent = '✓ Downloaded';
+  } catch(err) {
+    btn.textContent = '📦 Finalize & Download Zip';
+    btn.disabled = false;
+    alert('Could not build zip: ' + err.message);
+  }
+}
+
+// ── Import session into onboarding ──
+function obImportSession() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  input.onchange = function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      try {
+        const data = JSON.parse(ev.target.result);
+        // Accept TRS session exports — pull candidate name from prescreen or interview
+        const name = data.userName || (data.interview && data.interview.candidateName) || '';
+        if (name) {
+          document.getElementById('obCandidateName').value = name;
+          obSyncName();
+        }
+        // Restore onboarding state if it was previously exported
+        if (data.onboarding) {
+          const ob = data.onboarding;
+          if (ob.signatures) Object.assign(obState.signatures, ob.signatures);
+          if (ob.reviewChecks) Object.assign(obState.reviewChecks, ob.reviewChecks);
+          // Re-apply signatures to UI
+          Object.keys(obState.signatures).forEach(k => obApplySignature(k));
+          obRenderReview();
+          obRenderUploads();
+          // Restore step progress
+          if (ob.stepsComplete) { ob.stepsComplete.forEach((v,i) => obState.stepsComplete[i] = v); }
+          const lastStep = obState.stepsComplete.lastIndexOf(true);
+          obGoStep(Math.min(lastStep + 1, 4));
+        }
+        if (name) alert('Session imported for: ' + name);
+      } catch(err) {
+        alert('Could not read file. Use a valid TRS session JSON.');
+      }
+    };
+    reader.readAsText(file);
+  };
+  input.click();
+}
+
+// ── Reset ──
+function obReset() {
+  if (!confirm('Clear all onboarding data for this candidate?')) return;
+  Object.keys(obState.signatures).forEach(k => delete obState.signatures[k]);
+  Object.keys(obState.uploads).forEach(k => delete obState.uploads[k]);
+  Object.keys(obState.reviewChecks).forEach(k => delete obState.reviewChecks[k]);
+  obState.stepsComplete.fill(false);
+  obState.currentStep = 0;
+  obState.finalized = false;
+  document.getElementById('obCandidateName').value = '';
+  document.getElementById('obStartDate').value = '';
+  document.getElementById('obRole').value = '';
+  document.getElementById('obSalary').value = '';
+  document.getElementById('obCommission').value = '';
+  document.getElementById('obManager').value = '';
+  document.getElementById('obLocation').value = '';
+  document.getElementById('obOfferNotes').value = '';
+  document.getElementById('ob-offer-unsigned').style.display = '';
+  document.getElementById('ob-offer-signed').style.display = 'none';
+  document.getElementById('ob-finalized-badge').style.display = 'none';
+  obSyncName();
+  obGoStep(0);
+  obCheckLegalComplete();
+  obRenderUploads();
+  obRenderReview();
+}
+
+// ── Also update deep link list ──
+const _origMgrOnly = ['manager','coaching','prescreen','interview','videos','onboarding'];
+
+// ── Init ──
+obRenderUploads();
+obRenderReview();
+
+// Patch deep link to include onboarding
+(function() {
+  const origHandleDeepLink = handleDeepLink;
+})();
+
+
+
+// ══════ ONBOARDING DOCUMENT PRINTING ENGINE ══════
+
+function obGetHeader(docTitle, docSubtitle) {
+  const cand    = document.getElementById('obCandidateName').value.trim() || 'Candidate';
+  const role    = document.getElementById('obRole').value.trim() || 'AV Sales Representative';
+  const startRaw= document.getElementById('obStartDate').value;
+  const startStr= startRaw ? new Date(startRaw+'T12:00:00').toLocaleDateString('en-US',{dateStyle:'long'}) : '—';
+  const mgr     = document.getElementById('obManager').value.trim() || '—';
+  const loc     = document.getElementById('obLocation').value.trim() || '—';
+  const today   = new Date().toLocaleDateString('en-US',{dateStyle:'long'});
+  return { cand, role, startStr, mgr, loc, today };
+}
+
+function obDocStyles() {
+  return `
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Georgia',serif;color:#1a1a1a;background:#fff;font-size:14px;line-height:1.7;}
+    .page{max-width:720px;margin:0 auto;padding:52px 60px;}
+    .logo-bar{display:flex;align-items:center;gap:14px;margin-bottom:36px;padding-bottom:16px;border-bottom:3px solid #c8a84b;}
+    .logo-box{width:44px;height:44px;background:#1a3a5c;border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:16px;font-weight:700;color:#c8a84b;flex-shrink:0;}
+    .logo-text h1{font-size:18px;font-weight:700;color:#1a3a5c;letter-spacing:-.2px;}
+    .logo-text p{font-size:12px;color:#888;margin-top:1px;}
+    .doc-title{font-size:26px;font-weight:700;color:#1a3a5c;margin-bottom:4px;letter-spacing:-.3px;}
+    .doc-subtitle{font-size:13px;color:#888;font-family:Arial,sans-serif;margin-bottom:28px;}
+    .address-block{margin-bottom:28px;font-size:14px;line-height:1.9;}
+    .address-block .label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;font-family:Arial,sans-serif;}
+    .salutation{font-size:15px;margin-bottom:20px;font-style:italic;}
+    .body-text{font-size:14px;line-height:1.85;margin-bottom:16px;text-align:justify;}
+    .terms-table{width:100%;border-collapse:collapse;margin:24px 0;font-family:Arial,sans-serif;}
+    .terms-table th{background:#1a3a5c;color:#c8a84b;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:9px 12px;text-align:left;}
+    .terms-table td{padding:10px 12px;border-bottom:1px solid #e8e4dc;font-size:13px;vertical-align:top;}
+    .terms-table tr:last-child td{border-bottom:none;}
+    .terms-table .term-label{font-weight:700;color:#1a3a5c;width:40%;}
+    .section-heading{font-size:11px;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.1em;border-bottom:1px solid #e8e4dc;padding-bottom:7px;margin:28px 0 14px;font-family:Arial,sans-serif;}
+    .sig-block{margin-top:40px;display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+    .sig-col .sig-name{font-size:17px;font-style:italic;color:#1a3a5c;border-bottom:1.5px solid #1a3a5c;padding-bottom:4px;margin-bottom:5px;min-height:28px;}
+    .sig-col .sig-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#888;font-family:Arial,sans-serif;}
+    .audit-block{background:#faf8f2;border:1px solid #e0d8c0;border-radius:8px;padding:14px 16px;margin-top:18px;font-family:'Courier New',monospace;font-size:11px;line-height:1.9;color:#5a4a1a;}
+    .audit-block strong{color:#1a3a5c;}
+    .policy-intro{font-size:14px;line-height:1.85;margin-bottom:16px;}
+    .policy-list{margin:12px 0 16px;padding-left:20px;}
+    .policy-list li{margin-bottom:8px;font-size:14px;line-height:1.7;}
+    .clause{margin-bottom:20px;}
+    .clause-title{font-size:13px;font-weight:700;color:#1a3a5c;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px;font-family:Arial,sans-serif;}
+    .page-break{page-break-before:always;padding-top:52px;}
+    .doc-divider{border:none;border-top:2px solid #c8a84b;margin:48px 0;}
+    .footer{margin-top:48px;padding-top:14px;border-top:1px solid #e8e4dc;font-size:10px;color:#aaa;font-family:Arial,sans-serif;display:flex;justify-content:space-between;}
+    @media print{
+      button{display:none!important;}
+      .page{padding:36px 48px;}
+      .page-break{page-break-before:always;}
+    }
+  `;
+}
+
+function obLogoBar(docTitle, docSub) {
+  return `<div class="logo-bar">
+    <div class="logo-box">TRS</div>
+    <div class="logo-text"><h1>Total Recording Services</h1><p>Professional AV &amp; Event Technology</p></div>
+  </div>
+  <div class="doc-title">${docTitle}</div>
+  <div class="doc-subtitle">${docSub}</div>`;
+}
+
+function obSigBlock(sigKey, signerLabel, companySignerLabel) {
+  const sig = obState.signatures[sigKey];
+  const signed = sig ? sig.name : '';
+  const ts     = sig ? sig.timestamp : '';
+  const tok    = sig ? sig.token : '';
+  return `
+  <div class="sig-block">
+    <div class="sig-col">
+      <div class="sig-label">Candidate Signature</div>
+      <div class="sig-name">${signed}</div>
+      <div class="sig-label">${signerLabel}</div>
+      ${ts ? `<div style="font-size:11px;color:#888;margin-top:4px;font-family:Arial,sans-serif;">${ts}</div>` : ''}
+    </div>
+    <div class="sig-col">
+      <div class="sig-label">Authorized Signatory</div>
+      <div class="sig-name">&nbsp;</div>
+      <div class="sig-label">${companySignerLabel}</div>
+    </div>
+  </div>
+  ${sig ? `<div class="audit-block">
+    <strong>Digital Audit Record</strong><br>
+    Signed by: <strong>${sig.name}</strong> &nbsp;·&nbsp; ${sig.timestamp}<br>
+    Record ID: <strong>${sig.token}</strong>
+  </div>` : ''}`;
+}
+
+function obDocFooter(docName, cand) {
+  return `<div class="footer"><span>${docName} — ${cand}</span><span>Generated ${new Date().toLocaleDateString('en-US',{dateStyle:'long'})}</span></div>`;
+}
+
+// ── Print Offer Letter ──
+function obPrintOfferLetter() {
+  const h = obGetHeader();
+  const salary     = document.getElementById('obSalary').value.trim() || '—';
+  const commission = document.getElementById('obCommission').value.trim() || '—';
+  const offerNotes = document.getElementById('obOfferNotes').value.trim();
+
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Offer Letter — ${h.cand}</title>
+  <style>${obDocStyles()}</style></head>
+  <body><div class="page">
+  ${obLogoBar('Offer Letter', 'Conditional Offer of Employment')}
+
+  <div class="address-block">
+    <div class="label">Date</div>
+    ${h.today}
+  </div>
+
+  <div class="address-block">
+    <div class="label">Prepared For</div>
+    <strong>${h.cand}</strong>
+  </div>
+
+  <div class="salutation">Dear ${h.cand},</div>
+
+  <p class="body-text">
+    We are pleased to extend this conditional offer of employment for the position of <strong>${h.role}</strong> at
+    Total Recording Services. This offer is contingent upon successful completion of any required background
+    verification and your execution of the agreements referenced below.
+  </p>
+  <p class="body-text">
+    We believe your background and skills make you an excellent fit for our team, and we look forward to having
+    you contribute to our growth. Please review the terms outlined below carefully. If you have any questions
+    prior to signing, do not hesitate to reach out.
+  </p>
+
+  <div class="section-heading">Terms of Employment</div>
+  <table class="terms-table">
+    <thead><tr><th>Term</th><th>Detail</th></tr></thead>
+    <tbody>
+      <tr><td class="term-label">Position</td><td>${h.role}</td></tr>
+      <tr><td class="term-label">Start Date</td><td>${h.startStr}</td></tr>
+      <tr><td class="term-label">Reporting Manager</td><td>${h.mgr}</td></tr>
+      <tr><td class="term-label">Work Location</td><td>${h.loc}</td></tr>
+      <tr><td class="term-label">Base Compensation</td><td>${salary}</td></tr>
+      <tr><td class="term-label">Commission / Incentives</td><td>${commission}</td></tr>
+      <tr><td class="term-label">Employment Type</td><td>Full-Time, At-Will</td></tr>
+      <tr><td class="term-label">Benefits Eligibility</td><td>Per company policy; details provided on Day 1</td></tr>
+    </tbody>
+  </table>
+
+  ${offerNotes ? `<div class="section-heading">Additional Terms &amp; Notes</div><p class="body-text" style="white-space:pre-wrap;">${offerNotes}</p>` : ''}
+
+  <div class="section-heading">Conditions of Offer</div>
+  <p class="body-text">
+    This offer is conditional upon: (1) execution of all required onboarding agreements including the
+    Non-Compete, Confidentiality Agreement, and Code of Conduct; (2) provision of documentation establishing
+    your identity and employment eligibility as required by federal law; and (3) any background screening
+    required by company policy.
+  </p>
+  <p class="body-text">
+    This offer does not constitute a guarantee of employment for any specific duration. Employment at
+    Total Recording Services is at-will and may be terminated by either party at any time, with or without cause.
+  </p>
+
+  <p class="body-text" style="margin-top:24px;">
+    To accept this offer, please sign below and return a copy by your start date. We look forward to welcoming you to the team.
+  </p>
+  <p class="body-text">Sincerely,<br><br><strong>Total Recording Services</strong><br>Human Resources &amp; Management</p>
+
+  ${obSigBlock('offer', h.cand + ' — Candidate', 'TRS Management')}
+  ${obDocFooter('Offer Letter', h.cand)}
+  <br><button onclick="window.print()" style="margin-top:20px;padding:10px 20px;background:#1a3a5c;color:#c8a84b;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;font-family:Arial,sans-serif;">🖨 Print / Save as PDF</button>
+  </div></body></html>`);
+  win.document.close(); win.focus();
+}
+
+// ── Print Legal Package (all 4 docs, page-break separated) ──
+function obPrintLegalPackage() {
+  const h = obGetHeader();
+  const win = window.open('', '_blank');
+
+  function legalDoc(key, title, subtitle, body) {
+    return `
+    <div class="${key !== 'noncompete' ? 'page-break' : ''}">
+    <div class="page" style="padding-top:${key !== 'noncompete' ? '48px' : '52px'};">
+    ${obLogoBar(title, subtitle)}
+    <div class="address-block">
+      <div class="label">Employee</div><strong>${h.cand}</strong>
+    </div>
+    <div class="address-block">
+      <div class="label">Position</div>${h.role}
+    </div>
+    <div class="address-block">
+      <div class="label">Effective Date</div>${h.startStr}
+    </div>
+    ${body}
+    ${obSigBlock(key, h.cand + ' — Employee', 'TRS Authorized Signatory')}
+    ${obDocFooter(title, h.cand)}
+    </div></div>`;
+  }
+
+  const noncompete = legalDoc('noncompete', 'Non-Compete Agreement', 'Restrictive Covenant &amp; Non-Solicitation', `
+    <p class="policy-intro">This Non-Compete Agreement ("Agreement") is entered into between <strong>${h.cand}</strong> ("Employee") and Total Recording Services ("Company") as a condition of employment.</p>
+    <div class="section-heading">1. Restricted Activities</div>
+    <div class="clause">
+      <p class="body-text">During the term of employment and for a period of <strong>twelve (12) months</strong> following the termination of employment for any reason, Employee agrees not to, directly or indirectly:</p>
+      <ul class="policy-list">
+        <li>Engage in or own any interest in any business that provides audiovisual, event technology, or related services that compete with the Company within a <strong>50-mile radius</strong> of any Company operating location;</li>
+        <li>Solicit, recruit, or induce any Company employee to leave their employment;</li>
+        <li>Solicit any client, customer, or prospect of the Company for the purpose of providing competing services.</li>
+      </ul>
+    </div>
+    <div class="section-heading">2. Non-Solicitation of Clients</div>
+    <div class="clause">
+      <p class="body-text">Employee agrees that during the restricted period, they will not, directly or indirectly, contact or solicit any client or customer of the Company with whom Employee had material contact during the last twelve (12) months of employment, for the purpose of providing any product or service that competes with the Company's offerings.</p>
+    </div>
+    <div class="section-heading">3. Reasonableness</div>
+    <div class="clause">
+      <p class="body-text">Employee acknowledges that the restrictions in this Agreement are reasonable and necessary to protect the legitimate business interests of the Company, including its client relationships, proprietary methods, and confidential information.</p>
+    </div>
+    <div class="section-heading">4. Remedies</div>
+    <div class="clause">
+      <p class="body-text">Employee acknowledges that breach of this Agreement may cause irreparable harm to the Company for which monetary damages may be inadequate. The Company shall be entitled to seek injunctive relief in addition to any other remedies available at law or equity.</p>
+    </div>
+  `);
+
+  const atwill = legalDoc('atwill', 'At-Will Employment Acknowledgment', 'Employment Status Disclosure', `
+    <p class="policy-intro">This Acknowledgment confirms the at-will nature of Employee's employment relationship with Total Recording Services.</p>
+    <div class="section-heading">Acknowledgment of At-Will Status</div>
+    <div class="clause">
+      <p class="body-text">I, <strong>${h.cand}</strong>, acknowledge and understand the following:</p>
+      <ul class="policy-list">
+        <li>My employment with Total Recording Services is <strong>at-will</strong>, meaning that either the Company or I may terminate the employment relationship at any time, with or without cause, and with or without advance notice.</li>
+        <li>Nothing in the Offer Letter, Employee Handbook, or any other communication creates a contract of employment for a definite period or limits the at-will nature of my employment.</li>
+        <li>No verbal or written statements by any manager, supervisor, or representative of the Company — other than a written contract signed by an authorized officer — can alter or modify the at-will nature of my employment.</li>
+        <li>This Acknowledgment does not in any way alter or modify Company policies, benefit programs, or disciplinary procedures that may be in effect from time to time.</li>
+      </ul>
+    </div>
+    <div class="section-heading">Voluntary Agreement</div>
+    <p class="body-text">I have read this Acknowledgment, I understand its contents, and I sign it voluntarily as a condition of my employment.</p>
+  `);
+
+  const nda = legalDoc('nda', 'Confidentiality &amp; Non-Disclosure Agreement', 'Protection of Proprietary Information', `
+    <p class="policy-intro">This Confidentiality Agreement is entered into between <strong>${h.cand}</strong> ("Employee") and Total Recording Services ("Company") as a condition of employment.</p>
+    <div class="section-heading">1. Definition of Confidential Information</div>
+    <div class="clause">
+      <p class="body-text">"Confidential Information" means any non-public information relating to the Company's business, including but not limited to: client lists and contact information; pricing structures and rate cards; vendor relationships and negotiated terms; internal sales scripts, playbooks, and training materials; software, systems, and operational processes; financial data; and any other information the Company designates as confidential.</p>
+    </div>
+    <div class="section-heading">2. Employee Obligations</div>
+    <div class="clause">
+      <ul class="policy-list">
+        <li>Employee will hold all Confidential Information in strict confidence and will not disclose it to any third party without prior written consent of the Company.</li>
+        <li>Employee will use Confidential Information solely for the purpose of performing their duties at the Company.</li>
+        <li>Employee will immediately notify the Company of any unauthorized disclosure or use of Confidential Information.</li>
+        <li>Upon termination of employment, Employee will immediately return or destroy all documents and materials containing Confidential Information.</li>
+      </ul>
+    </div>
+    <div class="section-heading">3. Duration</div>
+    <p class="body-text">These obligations survive the termination of employment and continue indefinitely with respect to trade secrets, and for a period of three (3) years with respect to other Confidential Information.</p>
+    <div class="section-heading">4. Permitted Disclosures</div>
+    <p class="body-text">Nothing in this Agreement prohibits Employee from disclosing information as required by law or court order, or from reporting potential violations to relevant governmental authorities.</p>
+  `);
+
+  const conduct = legalDoc('conduct', 'Code of Conduct', 'Workplace Standards &amp; Expectations', `
+    <p class="policy-intro">This Code of Conduct sets forth the professional standards expected of all employees at Total Recording Services. By signing below, Employee acknowledges having read, understood, and agreed to adhere to these standards.</p>
+    <div class="section-heading">Attendance &amp; Punctuality</div>
+    <div class="clause">
+      <ul class="policy-list">
+        <li>Core hours are <strong>8:30 AM – 5:00 PM, Monday through Friday</strong>. Consistent punctuality is required.</li>
+        <li>Occasional evening client calls (2–3 times per month) are a standard expectation of the role.</li>
+        <li>Absences must be communicated to your direct manager before the start of the business day.</li>
+      </ul>
+    </div>
+    <div class="section-heading">CRM &amp; Activity Logging</div>
+    <div class="clause">
+      <ul class="policy-list">
+        <li>All client interactions — calls, emails, and meetings — must be logged in Odoo CRM on the same day they occur.</li>
+        <li>Pipeline and task records must be kept current; delinquent CRM hygiene is a performance issue.</li>
+        <li>Client data is Company property and must not be exported or transferred to personal devices or accounts.</li>
+      </ul>
+    </div>
+    <div class="section-heading">Professional Communication</div>
+    <div class="clause">
+      <ul class="policy-list">
+        <li>All external communications (email, phone, in-person) must reflect professionally on the Company.</li>
+        <li>Internal Slack/messaging channels must be used appropriately and responsively during business hours.</li>
+        <li>Sales scripts, pricing, and Company processes must not be shared externally without authorization.</li>
+      </ul>
+    </div>
+    <div class="section-heading">Performance Standards</div>
+    <div class="clause">
+      <ul class="policy-list">
+        <li>Employees are expected to meet or exceed daily activity targets (calls, follow-ups) as defined by management.</li>
+        <li>Participation in training, coaching, and performance review sessions is mandatory.</li>
+        <li>Conduct that is dishonest, disrespectful, or harmful to colleagues or clients will result in immediate disciplinary action.</li>
+      </ul>
+    </div>
+  `);
+
+  win.document.write(`<!DOCTYPE html><html><head><title>Legal Package — ${h.cand}</title>
+  <style>${obDocStyles()}</style></head>
+  <body>${noncompete}${atwill}${nda}${conduct}
+  <div style="max-width:720px;margin:0 auto;padding:20px 60px;">
+    <button onclick="window.print()" style="padding:10px 22px;background:#1a3a5c;color:#c8a84b;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;font-family:Arial,sans-serif;">🖨 Print All / Save as PDF</button>
+  </div>
+  </body></html>`);
+  win.document.close(); win.focus();
+}
+
+// ── Print Full Hire Package (Offer + all Legal docs) ──
+function obPrintFullPackage() {
+  const h = obGetHeader();
+  // Just open both in sequence — offer letter first, then legal pack
+  obPrintOfferLetter();
+  setTimeout(() => obPrintLegalPackage(), 400);
+}
+
+
+// ══════ DEV MODE — triple-click TRS logo ══════
+let _devClicks = 0, _devTimer = null;
+function devTripleClick() {
+  _devClicks++;
+  clearTimeout(_devTimer);
+  if (_devClicks >= 3) {
+    _devClicks = 0;
+    devActivateManager();
+    return;
+  }
+  _devTimer = setTimeout(() => { _devClicks = 0; }, 600);
+}
+function devActivateManager() {
+  currentUserName = 'Dev Manager';
+  currentRole = 'manager';
+  setManagerTabs(true);
+  applyUserSession();
+  document.getElementById('onloadOverlay').style.display = 'none';
+  // Flash the logo gold as feedback
+  const logos = [document.getElementById('navLogo'), document.getElementById('onloadLogo')];
+  logos.forEach(el => {
+    if (!el) return;
+    const orig = el.style.background;
+    el.style.background = '#1d6b4a';
+    el.style.color = '#fff';
+    setTimeout(() => { el.style.background = ''; el.style.color = ''; }, 600);
+  });
+}
+
 </script>
-
-
-</body></html>
+</body>
+</html>
